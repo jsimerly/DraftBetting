@@ -12,6 +12,7 @@ class AccountsTest(APITestCase):
             'username' : 'testUser2',
             'email':'test@test.com',
             'password': 'Welcome1!',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
@@ -23,7 +24,8 @@ class AccountsTest(APITestCase):
         data = {
             'username': 'foobarbaz',
             'email':  'testing',
-            'passsword': 'foobarbaz'
+            'passsword': 'foobarbaz',
+            'first_name' : 'Jacob'
         }
 
 
@@ -36,7 +38,8 @@ class AccountsTest(APITestCase):
         data = {
             'username': 'foobarbaz',
             'email':  'testing@abc',
-            'passsword': 'foobarbaz'
+            'passsword': 'foobarbaz',
+            'first_name' : 'Jacob'
         }
 
 
@@ -47,9 +50,10 @@ class AccountsTest(APITestCase):
 
     def test_create_user_with_no_email(self):
         data = {
-                'username' : 'foobar',
-                'email': '',
-                'password': 'foobarbaz'
+            'username' : 'foobar',
+            'email': '',
+            'password': 'foobarbaz',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
@@ -62,6 +66,7 @@ class AccountsTest(APITestCase):
             'username' : 'testUser',
             'email':'tmail22@test.com',
             'password': 'Welcome1!',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
@@ -73,20 +78,21 @@ class AccountsTest(APITestCase):
         data = {
             'username' : 'Simerly'*10,
             'email' : 'legit@email.com',
-            'password' : 'Welcome1!'
+            'password' : 'Welcome1!',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(User.objects.count(), 1)
-        print(response.data.keys())
         self.assertEqual(len(response.data['username']),1)
 
     def test_create_user_with_no_username(self):
         data = {
             'username' : '',
             'email' : 'legit@email.com',
-            'password' : 'Welcome1!'
+            'password' : 'Welcome1!',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
@@ -100,7 +106,8 @@ class AccountsTest(APITestCase):
         data = {
             'username' : 'whater',
             'email' : 'legit@email.com',
-            'password' : 'short'
+            'password' : 'short',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
@@ -112,7 +119,8 @@ class AccountsTest(APITestCase):
         data = {
             'username' : 'whater',
             'email' : 'legit@email.com',
-            'password' : ''
+            'password' : '',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
@@ -131,6 +139,7 @@ class AccountsTest(APITestCase):
             'username' : 'tuser',
             'email':'temail@test.com',
             'password': 'Welcome1!',
+            'first_name' : 'Jacob'
         }
 
         response = self.client.post(self.create_url, data, format='json')
@@ -141,6 +150,7 @@ class AccountsTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['username'], data['username'])
         self.assertEqual(response.data['email'], data['email'])
+        self.assertEqual(response.data['first_name'], data['first_name'])
         self.assertFalse('password' in response.data)
 
         self.assertEqual(response.data['token'], token.key)
