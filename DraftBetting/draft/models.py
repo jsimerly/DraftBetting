@@ -33,7 +33,7 @@ class Competitor(models.Model):
     pointsFromPos = models.IntegerField(default=0)
     pointsFromPick = models.IntegerField(default=0)
 
-    def totalPoints(self):
+    def total_points(self):
         return self.pointsFromPos + self.pointsFromPick
 
 class CompPick(models.Model):
@@ -45,10 +45,10 @@ class CompPick(models.Model):
     round = models.IntegerField()
     pick = models.IntegerField()
 
-    def getPickFullString(self):
+    def get_pick_full_string(self):
         return 'Round: {} Pick: {}'.format(self.round, self.pick)
 
-    def getPickShortString(self):
+    def get_pick_short_string(self):
         return '{}.{}'.format(self.round, self.pick)
 
 class DraftPick(models.Model):
