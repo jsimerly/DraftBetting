@@ -2,12 +2,14 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
+from . import serializers
 from accounts.serializers import UserSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
 # Create your views here.
-class UserCreate(APIView):
+class UserCreate(generics.CreateAPIView):
+    serializer_class = UserSerializer
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
