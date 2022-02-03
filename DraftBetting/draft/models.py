@@ -7,15 +7,19 @@ class Player(models.Model):
     position = models.CharField(max_length=4, null=True)
 
     EstimatedRound = models.IntegerField(default=7)
-    EstimatedPick = models.IntegerField(default=32)
-    EstimatedOverAll = models.IntegerField()
 
     college = models.CharField(max_length=256)
     age = models.CharField(max_length=30)
 
-    TakenRound = models.IntegerField(null=True)
-    TakenPick = models.IntegerField(null=True)
-    TakenOverall = models.IntegerField(null=True)
+    TakenRound = models.IntegerField(null=True, blank=True)
+    TakenPick = models.IntegerField(null=True, blank=True)
+
+    def get_estimated_overall(self):
+        return self.EstimatedRound*32 + self.EstimatedPick
+    
+    def get_taken_overall(self):
+        return self.TakenRound*32 + self.TakenPick
+
 
 class League(models.Model):
     year = models.IntegerField()
@@ -38,7 +42,7 @@ class Competitor(models.Model):
 
 class CompPick(models.Model):
     player = models.ForeignKey(Player, on_delete=models.PROTECT)
-    name = models.CharField(max_length = 256 ,null=False)
+    pos = models.CharField(max_length=4, null=True)
 
     comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
     
@@ -50,6 +54,9 @@ class CompPick(models.Model):
 
     def get_pick_short_string(self):
         return '{}.{}'.format(self.round, self.pick)
+
+    def get_overall(self):
+        return self.pick + self.round*32
 
 class DraftPick(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)  
