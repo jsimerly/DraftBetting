@@ -5,6 +5,8 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from accounts import serializers
+
 #My Imports
 from .models import *
 from draft.serializers import PlayerSerializer, CompPickSerializer
@@ -12,6 +14,15 @@ from draft.serializers import PlayerSerializer, CompPickSerializer
 # Create your views here.
 class CompPickView(APIView):
     serializer_class = CompPickSerializer
+
+    def get(self,request, format='json'):
+        players = Player.objects.all()
+        print('--------------')
+        for i in players:
+            print(i.name)
+        print('-----------')
+        serializer =  PlayerSerializer(players[0])
+        return Response(serializer.data)
 
     def post(self, request, format='json'):
         if not self.request.session.exists(self.request.session.session_key):
