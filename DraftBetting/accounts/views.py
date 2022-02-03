@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 # Create your views here.
 class UserCreate(generics.CreateAPIView):
     serializer_class = UserSerializer
+
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
