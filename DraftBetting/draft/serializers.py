@@ -12,5 +12,5 @@ class PlayerSerializer(serializers.ModelSerializer):
 class CompPickSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompPick
-        fields = ('player', 'pos', 'round', 'pick', 'comp')
+        fields = ('player', 'pos', 'round', 'pick') #, 'comp')
     

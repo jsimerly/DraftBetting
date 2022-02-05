@@ -24,9 +24,51 @@ export default class PickPage extends Component {
     constructor(props){
         super(props);
         this.state = {
+            playerSelected: null,
+            positionSelected: null,
             pickIsLocked: false,
-        }
+        };
+
+        this.handleLockInPressed = this.handleLockInPressed.bind(this);
+        this.handlePlayerSelected = this.handlePlayerSelected.bind(this);
+        this.handlePosSelected = this.handlePosSelected.bind(this);
     }
+
+    handlePlayerSelected(e) {
+        this.setState({
+            playerSelected: e.target.value,
+        });
+    }
+
+    handlePosSelected(e) {
+        this.setState({
+            positionSelected: e.target.value,
+        });
+    }
+
+    handleLockInPressed() {
+        this.setState({
+            pickIsLocked: true,
+        });
+        
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                round: 1,
+                pick: 1,
+                comp: 'Jacob',
+                player: this.state.playerSelected,
+                pos: this.state.positionSelected
+            })
+        };
+
+        fetch('/draft/pick-player/', requestOptions)
+        .then((response) => response.json())
+        .then((data) => alert(data));
+
+    }
+
 
     render(){
         return (
@@ -43,6 +85,7 @@ export default class PickPage extends Component {
                             labelId="select-helper-player-label"
                             id="player-selection"
                             label="player"
+                            onChange={this.handlePlayerSelected}
                         >   
                             <MenuItem value={10}>Player 1</MenuItem>
                             <MenuItem value={20}>Player 2</MenuItem>
@@ -58,6 +101,7 @@ export default class PickPage extends Component {
                                 id="pos-selection"
                                 label="position"
                                 align="center"
+                                onChange={this.handlePosSelected}
                             > 
                                 <MenuItem value={1}>QB</MenuItem>
                                 <MenuItem value={2}>RB</MenuItem>
@@ -79,7 +123,11 @@ export default class PickPage extends Component {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} align="center">
-                    <Button color="secondary" variant="container" align="center">  
+                    <Button 
+                        color="secondary" 
+                        variant="container" 
+                        align="center"
+                        onClick={this.handleLockInPressed}>  
                        <LockIcon/>
                     </Button>  
                 </Grid>               

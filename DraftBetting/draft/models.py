@@ -41,10 +41,11 @@ class Competitor(models.Model):
         return self.pointsFromPos + self.pointsFromPick
 
 class CompPick(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.PROTECT)
+    player = models.CharField(max_length=256)
+    #player = models.ForeignKey(Player, on_delete=models.PROTECT)
     pos = models.CharField(max_length=4, null=True)
 
-    comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
+    #comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
     
     round = models.IntegerField()
     pick = models.IntegerField()
