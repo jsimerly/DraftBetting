@@ -5,20 +5,27 @@ import {
         Typography, 
         TextField,
         FormControl, 
-        FormHelperText, 
+        FormHelperText,
+        InputLabel,
+        MenuItem,
+        Divider, 
         Radio, 
         RadioGroup, 
         FormControlLabel,
-        Select, } from '@material-ui/core'
+        Select,
+        Menu,
+        SvgIcon,
+     } from '@material-ui/core';
+import LockIcon from '@mui/icons-material/Lock';
 import { Link } from "react-router-dom";
 
 
-
 export default class PickPage extends Component {
-
-
     constructor(props){
         super(props);
+        this.state = {
+            pickIsLocked: false,
+        }
     }
 
     render(){
@@ -30,49 +37,50 @@ export default class PickPage extends Component {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} align="center">
-                    <FormControl component="fieldset">
-                        <FormHelperText>
-                            <div align="center">
-                                Player to pick:
-                            </div>
-                        </FormHelperText>
-                        
-                        <RadioGroup row defaultValue="true">
-                            <FormControlLabel 
-                                value="true" 
-                                control={<Radio color="primary"/>}
-                                label="Player/Pause"
-                                labelPlacement="bottom"
-                            />
-                            <FormControlLabel 
-                                value="false" 
-                                control={<Radio color="primary"/>}
-                                label="No Color"
-                                labelPlacement="bottom"
-                            />
-                        </RadioGroup>
+                    <FormControl fullWidth="true">
+                        <InputLabel id='select-helper-player-label'>Player</InputLabel>
+                        <Select
+                            labelId="select-helper-player-label"
+                            id="player-selection"
+                            label="player"
+                        >   
+                            <MenuItem value={10}>Player 1</MenuItem>
+                            <MenuItem value={20}>Player 2</MenuItem>
+                            <MenuItem value={30}>Player 3</MenuItem>
+                        </Select>
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} align="center">
-                    <FormControl>
-                        <TextField 
-                            required={true}
-                            type="number"
-                            inputProps={{
-                                min:1,
-                                style: { textAlign: "center" },
-                            }}
-                        />
-                        <FormHelperText>
-                            <div align="center">
-                                Voters
-                            </div>
-                        </FormHelperText>
+                    <FormControl fullWidth="true">
+                        <InputLabel id='select-helper-pos-label'>Position</InputLabel>
+                        <Select
+                                labelId="select-helper-pos-label"
+                                id="pos-selection"
+                                label="position"
+                                align="center"
+                            > 
+                                <MenuItem value={1}>QB</MenuItem>
+                                <MenuItem value={2}>RB</MenuItem>
+                                <MenuItem value={3}>WR</MenuItem>
+                                <MenuItem value={4}>TE</MenuItem>
+                                <MenuItem value={5}>OT</MenuItem>
+                                <MenuItem value={6}>OG</MenuItem>
+                                <MenuItem value={7}>C</MenuItem>
+                                <Divider/>
+                                <MenuItem value={8}>DL</MenuItem>
+                                <MenuItem value={9}>EDGE</MenuItem>
+                                <MenuItem value={10}>MLB</MenuItem>
+                                <MenuItem value={11}>OLB</MenuItem>
+                                <MenuItem value={12}>CB</MenuItem>
+                                <MenuItem value={13}>S</MenuItem>
+                                <Divider/>
+                                <MenuItem value={14}>K/P</MenuItem>
+                            </Select>
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} align="center">
                     <Button color="secondary" variant="container" align="center">  
-                        Create Room
+                       <LockIcon/>
                     </Button>  
                 </Grid>               
             </Grid>
