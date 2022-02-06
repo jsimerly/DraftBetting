@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Player, Competitor, CompPick
+from .models import Player, Competitor, CompPick, League
 
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,4 +13,9 @@ class CompPickSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompPick
         fields = ('player', 'pos', 'round', 'pick') #, 'comp')
+
+class LeagueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = League
+        fields = ('name',)
     

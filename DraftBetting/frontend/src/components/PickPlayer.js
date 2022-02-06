@@ -3,18 +3,11 @@ import {
         Button, 
         Grid, 
         Typography, 
-        TextField,
         FormControl, 
-        FormHelperText,
         InputLabel,
         MenuItem,
         Divider, 
-        Radio, 
-        RadioGroup, 
-        FormControlLabel,
         Select,
-        Menu,
-        SvgIcon,
      } from '@material-ui/core';
 import LockIcon from '@mui/icons-material/Lock';
 import { Link } from "react-router-dom";
@@ -63,9 +56,10 @@ export default class PickPage extends Component {
             })
         };
 
+        alert(requestOptions.body)
+
         fetch('/draft/pick-player/', requestOptions)
-        .then((response) => response.json())
-        .then((data) => alert(data));
+        .then((response) => response.json());
 
     }
 
