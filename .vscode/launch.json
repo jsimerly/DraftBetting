@@ -6,13 +6,13 @@
     "configurations": [
         {
             "type": "pwa-node",
+            "console": "integratedTerminal" ,
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\DraftBetting\\frontend\\src\\components\\PickPlayer.js",
-            "outputCapture": "std",
         }
     ]
 }

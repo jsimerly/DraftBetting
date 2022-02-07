@@ -3,9 +3,36 @@ import React, { Component } from "react";
 export default class RegisterPage extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            players:[],
+         }
+
+        this.getPlayers();
+    }
+
+
+    getPlayers() {
+        fetch('/draft/get-players')
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({
+                players: data,
+            });
+        });
     }
 
     render(){
-        return <h1>This is the register Page</h1>
+        let players = this.state.players.map((player)=>{
+            return(
+                <div>
+                    {player.name}
+                </div>
+            );
+        }
+        );
+        return (
+            <div>
+                {players}
+            </div>)
     }
 }

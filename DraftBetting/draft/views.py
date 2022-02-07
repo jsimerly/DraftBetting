@@ -19,7 +19,6 @@ class PlayersView(APIView):
 
     def get(self, request, format='json'):
         allPlayers = Player.objects.all()
-        print(allPlayers)
         
         data = PlayerSerializer(allPlayers, many=True).data
         return Response(data, status=status.HTTP_200_OK)
