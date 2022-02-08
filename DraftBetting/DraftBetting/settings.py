@@ -27,17 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-#Rest Framework
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
+AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -46,7 +41,6 @@ INSTALLED_APPS = [
     'draft',
     'accounts',
     'rest_framework',
-    'rest_framework.authtoken',
     'frontend.apps.FrontendConfig'
 ]
 

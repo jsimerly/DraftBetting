@@ -55,7 +55,6 @@ export default class CreateLeaguePage extends Component {
                             required
                             id="name-required"
                             label="League Name"
-                            defaultValue="e.g. Anti-Football Pussies"
                             onChange={this.handleNameEntered}
                         />
                     </FormControl>
