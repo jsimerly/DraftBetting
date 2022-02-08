@@ -24,26 +24,10 @@ class RegisterUser(generics.CreateAPIView):
             user.save()
 
             return Response(UserSerializer(user).data, status.HTTP_201_CREATED)
-        else:
-            print(serializer.errors)
+        
+        print(serializer.errors)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
-            
-
-
-
-
-# class UserCreate(generics.CreateAPIView):
-#     serializer_class = UserSerializer
-
-#     def post(self, request, format='json'):
-#         serializer = UserSerializer(data=request.data)
-
-#         if serializer.is_valid():
-#             user = serializer.save()
-          
-#             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

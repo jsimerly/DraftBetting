@@ -20,8 +20,24 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
+    def create_super_user(self, email, name, password=None):
+        if not email:
+            raise ValueError("Users must have an email address")
+
+        user = self.create_user(
+            email=self.normalize_email(email),
+            name=name
+        )
+
+        user.is_admin = True
+        user.save()
+        return user
+
 class User(AbstractUser):
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    username = models.CharField(max_length=1, unique=False, default='')
+
     email=models.EmailField(
         verbose_name='Email',
         max_length=255,
