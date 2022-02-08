@@ -8,6 +8,7 @@ import {
         MenuItem,
         Divider, 
         Select,
+        Menu,
      } from '@material-ui/core';
 import LockIcon from '@mui/icons-material/Lock';
 import { Link } from "react-router-dom";
@@ -21,13 +22,13 @@ export default class PickPage extends Component {
             positionSelected: null,
             pickIsLocked: 'false',
             players:[],
+            playerFilter : null,
         };
 
         this.getPlayers();
         this.handleLockInPressed = this.handleLockInPressed.bind(this);
         this.handlePlayerSelected = this.handlePlayerSelected.bind(this);
         this.handlePosSelected = this.handlePosSelected.bind(this);
-        this.handleTestPress = this.handleTestPress.bind(this);
     }
 
     handlePlayerSelected(e) {
@@ -37,14 +38,9 @@ export default class PickPage extends Component {
     }
 
     handlePosSelected(e) {
-        alert(this.state.players)
         this.setState({
             positionSelected: e.target.value,
         });
-    }
-
-    handleTestPress(){
-        console.log(this.state.players[0].name)
     }
 
     handleLockInPressed() {
@@ -83,27 +79,18 @@ export default class PickPage extends Component {
     render(){
         let playersMenuItem = this.state.players.map((player)=>{
             return (
-                <MenuItem value={player.id}>{player.name}</MenuItem>
+                <MenuItem value={player.id}>{player.name} - {player.position} ({player.college})</MenuItem>
             );
         })
         return (
             <div>
                 <Grid container spacing={1}>
                     <Grid item xs={12} align="center">
-                        <Button 
-                            color="secondary" 
-                            variant="container" 
-                            align="center"
-                            onClick={this.handleTestPress}>  
-                        <LockIcon/>
-                        </Button>  
-                    </Grid>
-                    <Grid item xs={12} align="center">
                         <Typography component='h4' variant='h4'>
                             Select Player
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} align="center">
+                    <Grid item xs={8} align="center">
                         <FormControl fullWidth="true">
                             <InputLabel id='select-helper-player-label'>Player</InputLabel>
                             <Select
@@ -116,7 +103,7 @@ export default class PickPage extends Component {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} align="center">
+                    <Grid item xs={8} align="center">
                         <FormControl fullWidth="true">
                             <InputLabel id='select-helper-pos-label'>Position</InputLabel>
                             <Select
@@ -126,23 +113,24 @@ export default class PickPage extends Component {
                                     align="center"
                                     onChange={this.handlePosSelected}
                                 > 
-                                    <MenuItem value={1}>QB</MenuItem>
-                                    <MenuItem value={2}>RB</MenuItem>
-                                    <MenuItem value={3}>WR</MenuItem>
-                                    <MenuItem value={4}>TE</MenuItem>
-                                    <MenuItem value={5}>OT</MenuItem>
-                                    <MenuItem value={6}>OG</MenuItem>
-                                    <MenuItem value={7}>C</MenuItem>
-                                    <Divider/>
-                                    <MenuItem value={8}>DL</MenuItem>
-                                    <MenuItem value={9}>EDGE</MenuItem>
-                                    <MenuItem value={10}>MLB</MenuItem>
-                                    <MenuItem value={11}>OLB</MenuItem>
-                                    <MenuItem value={12}>CB</MenuItem>
-                                    <MenuItem value={13}>S</MenuItem>
-                                    <Divider/>
-                                    <MenuItem value={14}>K/P</MenuItem>
-                                </Select>
+                                <MenuItem value={"QB"}>QB</MenuItem>
+                                <MenuItem value={"RB"}>RB</MenuItem>
+                                <MenuItem value={"WR"}>WR</MenuItem>
+                                <MenuItem value={"TE"}>TE</MenuItem>
+                                <MenuItem value={"OT"}>OT</MenuItem>
+                                <MenuItem value={"OG"}>OG</MenuItem>
+                                <MenuItem value={"C"}>C</MenuItem>
+                                <Divider/>
+                                <MenuItem value={"DL"}>DL</MenuItem>
+                                <MenuItem value={"EDGE"}>EDGE</MenuItem>
+                                <MenuItem value={"MLB"}>MLB</MenuItem>
+                                <MenuItem value={"OLB"}>OLB</MenuItem>
+                                <MenuItem value={"CB"}>CB</MenuItem>
+                                <MenuItem value={"S"}>S</MenuItem>
+                                <Divider/>
+                                <MenuItem value={"K/P"}>K/P</MenuItem>
+                
+                            </Select>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} align="center">

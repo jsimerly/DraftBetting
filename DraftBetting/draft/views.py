@@ -46,24 +46,27 @@ class CompPickView(APIView):
     serializer_class = CompPickSerializer
 
     def post(self, request, format='json'):
-        # if not self.request.session.exists(self.request.session.session_key):
-        #     self.request.session.create()
-
+      
         serializer = self.serializer_class(data=request.data)
-
+        print(request.data)
         if serializer.is_valid():
-            #user = self.request.session.session_key
-            #comp = serializer.data.get('comp')
-            player = serializer.data.get('player')
+     
+            playerQSet = Player.objects.filter(id=serializer.data.get('player'))
+            
+            player = playerQSet[0]
+            comp = serializer.data.get('comp')
             pos = serializer.data.get('pos')
             round = serializer.data.get('round')
             pick = serializer.data.get('pick')
 
-            compPick = CompPick(player=player, pos=pos, round=round,pick=pick) #comp=comp,)
+            compPick = CompPick(player=player, pos=pos, round=round,pick=pick, comp=comp,)
             compPick.save()
 
 
             return Response(CompPickSerializer(compPick).data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+            print("NOT VALID")
 
     
 

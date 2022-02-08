@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -41,10 +42,10 @@ class Competitor(models.Model):
         return self.pointsFromPos + self.pointsFromPick
 
 class CompPick(models.Model):
-    player = models.CharField(max_length=256)
-    #player = models.ForeignKey(Player, on_delete=models.PROTECT)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, null=True)
     pos = models.CharField(max_length=4, null=True)
 
+    comp = models.CharField(max_length=256, null=True)
     #comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
     
     round = models.IntegerField()
