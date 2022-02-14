@@ -20,25 +20,25 @@ class Player(models.Model):
     def get_taken_overall(self):
         return self.TakenRound*32 + self.TakenPick
 
-
 class League(models.Model):
     year = models.IntegerField()
     name = models.CharField(max_length=256)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
 
     winner = models.ManyToManyField('Competitor', related_name='leagueWinner')
     runnerUp = models.ManyToManyField('Competitor', related_name='leagueRunnerUp')
 
-
 class Competitor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(null=True, max_length = 30)
-    league = models.ManyToManyField(League)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    league = models.ForeignKey(League, on_delete=models.PROTECT, null=True)
 
     pointsFromPos = models.IntegerField(default=0)
     pointsFromPick = models.IntegerField(default=0)
 
     def total_points(self):
         return self.pointsFromPos + self.pointsFromPick
+
+
 
 class CompPick(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, null=True)
