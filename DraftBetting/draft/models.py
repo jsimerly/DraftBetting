@@ -28,6 +28,13 @@ class Player(models.Model):
     def get_taken_overall(self):
         return self.TakenRound*32 + self.TakenPick
 
+class Draft(models.Model):
+    overall = models.IntegerField(primary_key=True)
+    round = models.IntegerField()
+    pick = models.IntegerField()
+
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+
 class League(models.Model):
     year = models.IntegerField()
     name = models.CharField(max_length=256)
@@ -50,12 +57,36 @@ class CompPick(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, null=True)
     pos = models.CharField(max_length=4, null=True)
 
-    comp = models.CharField(max_length=256, null=True)
     comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
-    
+
+    overall = models.IntegerField()    
     round = models.IntegerField()
     pick = models.IntegerField()
 
+    correct_player = models.BooleanField(default=False)
+    correct_pos = models.BooleanField(default=False)
+
+    def get_drafted_player(self):
+        queryset = Draft.objects.filter(overall=self.overall)
+        drafted_player = queryset[0]
+        return drafted_player
+
+    def check_pos_pick(self):
+        drafted_player = self.get_drafted_player()
+
+        if drafted_player.pos == self.pos:
+            self.correct_pos = True
+        else:
+            self.correct_pos = False
+
+    def check_player_pick(self):
+        drafted_player = self.get_drafted_player()
+
+        if drafted_player.pos == self.pos:
+            self.correct_player = True
+        else:
+            self.correct_player = False
+            
     def get_pick_full_string(self):
         return 'Round: {} Pick: {}'.format(self.round, self.pick)
 

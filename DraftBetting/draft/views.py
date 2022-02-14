@@ -108,8 +108,9 @@ class CompPickView(generics.CreateAPIView):
             pos = serializer.data.get('pos')
             round = serializer.data.get('round')
             pick = serializer.data.get('pick')
+            overall = serializer.data.get('overall')
 
-            compPick = CompPick(player=player, pos=pos, round=round,pick=pick, comp=comp,)
+            compPick = CompPick(player=player, pos=pos, round=round,pick=pick, comp=comp, overall=overall)
             compPick.save()
 
 
