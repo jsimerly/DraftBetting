@@ -15,7 +15,7 @@ from draft.serializers import (
 )
 # Create your views here.
 
-class AddCompetitorToLeague(generics.CreateAPIView):
+class AddCompetitorToLeague(APIView):
     serializer_class = CompetitorSerializer
 
     def post(self, request):
@@ -117,7 +117,7 @@ class CreateLeagueView(APIView):
             print('-------------------------------')
             print(serializer.errors)
 
-class CompPickView(generics.CreateAPIView):
+class CompPickView(APIView):
     serializer_class = CompPickSerializer
 
     def post(self, request, format='json'):
