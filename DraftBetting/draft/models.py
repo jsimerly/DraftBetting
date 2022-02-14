@@ -29,9 +29,9 @@ class Player(models.Model):
         return self.TakenRound*32 + self.TakenPick
 
 class Draft(models.Model):
-    overall = models.IntegerField(primary_key=True)
-    round = models.IntegerField()
-    pick = models.IntegerField()
+    overall = models.IntegerField(null=True)
+    round = models.IntegerField(null=True)
+    pick = models.IntegerField(null=True)
 
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
 
@@ -50,6 +50,21 @@ class Competitor(models.Model):
     pointsFromPos = models.IntegerField(default=0)
     pointsFromPick = models.IntegerField(default=0)
 
+    def calculate_points_from_pos(self):
+        queryset = self.CompPick.objects.all()
+
+        points_pos = 0
+        points_player = 0
+
+        for pick in queryset:
+            if pick.correct_player:
+                points_player += 1
+            if pick.correct_pos:
+                points_pos += 1
+
+        self.pointsFromPick = points_player
+        self.pointsFromPos = points_pos
+
     def total_points(self):
         return self.pointsFromPos + self.pointsFromPick
 
@@ -67,12 +82,13 @@ class CompPick(models.Model):
     correct_pos = models.BooleanField(default=False)
 
     def get_drafted_player(self):
-        queryset = Draft.objects.filter(overall=self.overall)
-        drafted_player = queryset[0]
-        return drafted_player
+        drafted_player = Draft.objects.get(overall=self.overall)
+        return drafted_player.player
 
     def check_pos_pick(self):
         drafted_player = self.get_drafted_player()
+        print(drafted_player.pos)
+        print(self.pos)
 
         if drafted_player.pos == self.pos:
             self.correct_pos = True
@@ -82,7 +98,7 @@ class CompPick(models.Model):
     def check_player_pick(self):
         drafted_player = self.get_drafted_player()
 
-        if drafted_player.pos == self.pos:
+        if drafted_player == self.player:
             self.correct_player = True
         else:
             self.correct_player = False
@@ -95,11 +111,4 @@ class CompPick(models.Model):
 
     def get_overall(self):
         return self.pick + self.round*32
-
-class DraftPick(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)  
-
-    round = models.IntegerField()
-    pick = models.IntegerField()
-    pass
 

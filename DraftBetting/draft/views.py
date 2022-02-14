@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from .models import *
 from draft.serializers import (
     PlayerSerializer, CompPickSerializer, LeagueSerializer, CompetitorSerializer,
-    PlayerDraftedSerializer,
+    PlayerDraftedSerializer, DraftSerializer
 )
 # Create your views here.
 
@@ -34,6 +34,32 @@ class AddCompetitorToLeague(generics.CreateAPIView):
             return Response(CompetitorSerializer(comp).data, status=status.HTTP_201_CREATED)
         print('---------------')
         print(serializers.errors)
+
+class DraftView(APIView):
+    serializer_class = DraftSerializer
+
+    def post(self, request, format='json'):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            round = serializer.data.get('round')
+            pick = serializer.data.get('pick')
+            player_id = serializer.data.get('player')
+            overall = serializer.data.get('overall')
+
+            player = Player.objects.get(id=player_id)
+
+            draft = Draft(round=round, overall=overall, pick=pick, player=player)
+            draft.save()
+        
+            queryset = CompPick.objects.filter(overall=overall)
+            print(queryset)
+            for pick in queryset:
+                pick.check_pos_pick()
+                pick.check_player_pick()
+                pick.save()
+
+            return Response(DraftSerializer(draft).data, status=status.HTTP_201_CREATED)
 
 class PlayersView(APIView):
     serializer_class = PlayerSerializer

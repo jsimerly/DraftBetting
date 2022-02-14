@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 from django.contrib.auth import get_user_model
-from .models import Player, Competitor, CompPick, League
+from .models import Draft, Player, Competitor, CompPick, League, Draft
 
 User = get_user_model()
 
@@ -39,3 +39,8 @@ class CompetitorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Competitor
         fields = ('user', 'league',)
+
+class DraftSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Draft
+        fields = ('round', 'pick', 'player', 'overall')
