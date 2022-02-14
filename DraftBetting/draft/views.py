@@ -95,7 +95,6 @@ class PlayerDraftedView(APIView):
 
         return Response({'Bad Request' : 'Invalid Data', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class CreateLeagueView(APIView):
     serializer_class = LeagueSerializer
 
