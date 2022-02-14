@@ -7,11 +7,10 @@ from rest_framework import status, generics
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.authentication import  SessionAuthentication, BasicAuthentication
 from .serializers import UserSerializer, LogInSerializer
-from .models import User
 from . import serializers
+from django.contrib.auth import get_user_model
 
-
-
+User = get_user_model()
 # Create your views here.
 class CurrentUser(APIView):
     def get(self, request, format='json'):
@@ -28,7 +27,7 @@ class CurrentUser(APIView):
         json['name'] = 'Unregisted User'
         return Response(json, status=status.HTTP_200_OK)
 
-class RegisterUser(generics.CreateAPIView):
+class RegisterUser(APIView):
     serializer_class = UserSerializer
 
     def post(self, request, format='json'):
@@ -48,7 +47,7 @@ class RegisterUser(generics.CreateAPIView):
         print(serializer.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class LogInUser(generics.CreateAPIView):
+class LogInUser(APIView):
     serializer_class = LogInSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
 

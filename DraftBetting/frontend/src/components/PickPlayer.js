@@ -9,6 +9,11 @@ import {
         Divider, 
         Select,
         Menu,
+        Stack,
+        Item,
+        List,
+        ListItem,
+        ListItemText
      } from '@material-ui/core';
 import LockIcon from '@mui/icons-material/Lock';
 import { Link } from "react-router-dom";
@@ -78,8 +83,12 @@ export default class PickPage extends Component {
     
     render(){
         let playersMenuItem = this.state.players.map((player)=>{
+            const player_name = player.first_name + " " + player.last_name
+            const player_info = player.pos + " - " + player.college
             return (
-                <MenuItem value={player.id}>{player.name} - {player.position} ({player.college})</MenuItem>
+                <ListItem value={player.id}>
+                        <ListItemText primary={player_name}  secondary={player_info}/>
+                </ListItem>
             );
         })
         return (
