@@ -30,11 +30,6 @@ class LeagueSerializer(serializers.ModelSerializer):
         model = League
         fields = ('name', 'owner')
 
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model= User
-#         fields = ('id')
-
 class CompetitorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Competitor
@@ -43,4 +38,4 @@ class CompetitorSerializer(serializers.ModelSerializer):
 class DraftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Draft
-        fields = ('round', 'pick', 'player', 'overall')
+        fields = ('round', 'pick', 'player',)

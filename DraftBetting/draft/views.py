@@ -45,15 +45,15 @@ class DraftView(APIView):
             round = serializer.data.get('round')
             pick = serializer.data.get('pick')
             player_id = serializer.data.get('player')
-            overall = serializer.data.get('overall')
-
+            
             player = Player.objects.get(id=player_id)
+
+            overall = Draft.objects.latest('overall').overall + 1
 
             draft = Draft(round=round, overall=overall, pick=pick, player=player)
             draft.save()
         
             queryset = CompPick.objects.filter(overall=overall)
-            print(queryset)
             for pick in queryset:
                 pick.check_pos_pick()
                 pick.check_player_pick()

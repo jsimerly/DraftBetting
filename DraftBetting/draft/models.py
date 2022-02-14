@@ -35,6 +35,27 @@ class Draft(models.Model):
 
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
 
+    pick_skips_overall = []
+
+    def get_next_overall(self):
+        overall = Draft.objects.latest().overall
+        overall += 1
+
+        while overall in self.pick_skips_overall:
+            overall += 1
+
+        return overall
+
+    def get_next_round(self):
+        overall = self.get_next_overall()
+        round = overall // 32 + 1
+        return round
+
+    def get_next_pick(self):
+        overall = self.get_next_overall()
+        pick = overall % 32 
+        return pick
+
 class League(models.Model):
     year = models.IntegerField()
     name = models.CharField(max_length=256)
