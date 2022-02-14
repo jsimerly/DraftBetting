@@ -42,13 +42,13 @@ class DraftView(APIView):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            round = serializer.data.get('round')
-            pick = serializer.data.get('pick')
             player_id = serializer.data.get('player')
-            
             player = Player.objects.get(id=player_id)
-
-            overall = Draft.objects.latest('overall').overall + 1
+            
+            draft = Draft()
+            overall = draft.get_next_overall()
+            pick = draft.get_next_pick()
+            round = draft.get_next_round()
 
             draft = Draft(round=round, overall=overall, pick=pick, player=player)
             draft.save()
@@ -126,15 +126,19 @@ class CompPickView(generics.CreateAPIView):
   
         if serializer.is_valid():
      
-            player = Player.objects.get(id=serializer.data.get('player'))
+            playerId = serializer.data.get('player')
+            player = Player.objects.get(id=playerId)
             
             compId = serializer.data.get('comp')
             comp = Competitor.objects.get(id=compId)
 
             pos = serializer.data.get('pos')
-            round = serializer.data.get('round')
-            pick = serializer.data.get('pick')
-            overall = serializer.data.get('overall')
+
+            draft = Draft()
+
+            overall = draft.get_next_overall()
+            pick = draft.get_next_pick()
+            round = draft.get_next_round()
 
             compPick = CompPick(player=player, pos=pos, round=round,pick=pick, comp=comp, overall=overall)
             compPick.save()

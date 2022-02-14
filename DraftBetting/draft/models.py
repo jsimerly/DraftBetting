@@ -38,7 +38,11 @@ class Draft(models.Model):
     pick_skips_overall = []
 
     def get_next_overall(self):
-        overall = Draft.objects.latest().overall
+        try:
+            overall = Draft.objects.latest('overall').overall
+        except:
+            overall = 0
+        
         overall += 1
 
         while overall in self.pick_skips_overall:

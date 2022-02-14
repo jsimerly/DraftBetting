@@ -23,7 +23,7 @@ class PlayerDraftedSerializer(serializers.ModelSerializer):
 class CompPickSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompPick
-        fields = ( 'round', 'pick', 'comp', 'player', 'pos', 'overall',)
+        fields = ('comp', 'player', 'pos',)
         
 class LeagueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,4 +38,4 @@ class CompetitorSerializer(serializers.ModelSerializer):
 class DraftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Draft
-        fields = ('round', 'pick', 'player',)
+        fields = ('player',)
