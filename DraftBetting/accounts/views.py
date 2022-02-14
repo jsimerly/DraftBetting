@@ -33,7 +33,6 @@ class RegisterUser(generics.CreateAPIView):
 
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
-        print(request.data)
 
         if serializer.is_valid():
             email = serializer.data.get('email')

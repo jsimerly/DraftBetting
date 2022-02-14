@@ -1,6 +1,8 @@
 #External
 from datetime import datetime
 from os import stat
+import re
+from rest_framework.fields import CurrentUserDefault
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import generics, status
@@ -11,9 +13,31 @@ from accounts import serializers
 
 #My Imports
 from .models import *
-from draft.serializers import PlayerSerializer, CompPickSerializer, LeagueSerializer
-
+from draft.serializers import (
+    PlayerSerializer, CompPickSerializer, LeagueSerializer, CompetitorSerializer
+)
 # Create your views here.
+
+class AddCompetitorToLeague(generics.CreateAPIView):
+    serializer_class = CompetitorSerializer
+
+    def post(self, request):
+        serializers = CompetitorSerializer(data=request.data, context={'request': request})
+
+        if serializers.is_valid():
+            userId = serializers.data.get('user')
+            leagueId = serializers.data.get('league')
+
+            user = User.objects.get(id=userId)
+            league = League.objects.get(id=leagueId)
+
+            comp = Competitor(user=user, league=league)
+            comp.save()
+
+            return Response(CompetitorSerializer(comp).data, status=status.HTTP_201_CREATED)
+        print('---------------')
+        print(serializers.errors)
+
 class PlayersView(APIView):
     serializer_class = PlayerSerializer
 
@@ -29,18 +53,23 @@ class CreateLeagueView(APIView):
     def post(self, request, format='json'):
         serializer = self.serializer_class(data=request.data)
 
-        print(serializer)
         if serializer.is_valid():
             name = serializer.data.get('name')
             year = datetime.now().year
 
-            league = League(name=name, year=year)
+            
+
+            league = League(name=name, year=year, owner=request.user)
             league.save()
+
+            comp = Competitor(user=request.user, league=league)
+            comp.save()
 
             return Response(LeagueSerializer(league).data, status=status.HTTP_201_CREATED)
 
         else:
-            print('Not Valid')
+            print('-------------------------------')
+            print(serializer.errors)
 
 class CompPickView(APIView):
     serializer_class = CompPickSerializer
