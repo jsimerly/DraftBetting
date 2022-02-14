@@ -1,7 +1,5 @@
 #External
 from datetime import datetime
-from os import stat
-import re
 from rest_framework.fields import CurrentUserDefault
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -9,12 +7,11 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from accounts import serializers
-
 #My Imports
 from .models import *
 from draft.serializers import (
-    PlayerSerializer, CompPickSerializer, LeagueSerializer, CompetitorSerializer
+    PlayerSerializer, CompPickSerializer, LeagueSerializer, CompetitorSerializer,
+    PlayerDraftedSerializer,
 )
 # Create your views here.
 
@@ -42,10 +39,36 @@ class PlayersView(APIView):
     serializer_class = PlayerSerializer
 
     def get(self, request, format='json'):
-        allPlayers = Player.objects.all()
+        allPlayers = Player.objects.filter(picked=False)
         
         data = PlayerSerializer(allPlayers, many=True).data
         return Response(data, status=status.HTTP_200_OK)
+
+class PlayerDraftedView(APIView):
+    serializer_class = PlayerDraftedSerializer
+
+    def patch(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            playerId = serializer.data.get('id')
+            picked = serializer.data.get('picked')
+            taken_round = serializer.data.get('taken_round')
+            taken_pick = serializer.data.get('taken_pick')
+
+            player = Player.objects.get(id=playerId)
+
+            player.taken_round = taken_round
+            player.taken_pick = taken_pick
+
+            player.picked = picked
+
+            player.save(update_fields=['picked', 'taken_round', 'taken_pick'])
+            
+            return Response(PlayerDraftedSerializer(player).data, status=status.HTTP_200_OK)
+
+        return Response({'Bad Request' : 'Invalid Data', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CreateLeagueView(APIView):
     serializer_class = LeagueSerializer
@@ -56,8 +79,6 @@ class CreateLeagueView(APIView):
         if serializer.is_valid():
             name = serializer.data.get('name')
             year = datetime.now().year
-
-            
 
             league = League(name=name, year=year, owner=request.user)
             league.save()
@@ -71,19 +92,19 @@ class CreateLeagueView(APIView):
             print('-------------------------------')
             print(serializer.errors)
 
-class CompPickView(APIView):
+class CompPickView(generics.CreateAPIView):
     serializer_class = CompPickSerializer
 
     def post(self, request, format='json'):
-      
         serializer = self.serializer_class(data=request.data)
-        print(request.data)
+  
         if serializer.is_valid():
      
-            playerQSet = Player.objects.filter(id=serializer.data.get('player'))
+            player = Player.objects.get(id=serializer.data.get('player'))
             
-            player = playerQSet[0]
-            comp = serializer.data.get('comp')
+            compId = serializer.data.get('comp')
+            comp = Competitor.objects.get(id=compId)
+
             pos = serializer.data.get('pos')
             round = serializer.data.get('round')
             pick = serializer.data.get('pick')
@@ -94,9 +115,9 @@ class CompPickView(APIView):
 
             return Response(CompPickSerializer(compPick).data, status=status.HTTP_201_CREATED)
         else:
+            print("---------------")
             print(serializer.errors)
-            print("NOT VALID")
-
+            
     
 
         

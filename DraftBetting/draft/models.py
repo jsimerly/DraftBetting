@@ -1,21 +1,29 @@
 from django.db import models
+from django.forms import CharField
 from accounts.models import User
 
 # Create your models here.
 class Player(models.Model):
-    name = models.CharField(max_length=256, null=False)
-    position = models.CharField(max_length=4, null=True)
+    id = models.IntegerField(primary_key=True)
+    rank = models.IntegerField()
+    pos = models.CharField(max_length=4, null=True)
 
-    EstimatedRound = models.IntegerField(default=7)
+    first_name = models.CharField(max_length=256, null=False)
+    last_name = models.CharField(max_length=256, null=False)
+    suffix = models.CharField(max_length=5, null=True)
 
-    college = models.CharField(max_length=256)
-    age = models.CharField(max_length=30)
+    college = models.CharField(max_length=256, null=True)
+    col_class = models.CharField(max_length=4, null=True)
 
-    TakenRound = models.IntegerField(null=True, blank=True)
-    TakenPick = models.IntegerField(null=True, blank=True)
+    conf = models.CharField(max_length=25, null=True)
 
-    def get_estimated_overall(self):
-        return self.EstimatedRound*32 + self.EstimatedPick
+    picked = models.BooleanField(default=False)
+
+    taken_round = models.IntegerField(null=True, blank=True)
+    taken_pick = models.IntegerField(null=True, blank=True)
+
+    def get_full_name(self):
+        return self.first_name + self.last_name
     
     def get_taken_overall(self):
         return self.TakenRound*32 + self.TakenPick
@@ -38,14 +46,12 @@ class Competitor(models.Model):
     def total_points(self):
         return self.pointsFromPos + self.pointsFromPick
 
-
-
 class CompPick(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, null=True)
     pos = models.CharField(max_length=4, null=True)
 
     comp = models.CharField(max_length=256, null=True)
-    #comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
+    comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
     
     round = models.IntegerField()
     pick = models.IntegerField()

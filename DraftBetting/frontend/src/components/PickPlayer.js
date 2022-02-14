@@ -123,13 +123,12 @@ export default class PickPage extends Component {
                                 <Divider/>
                                 <MenuItem value={"DL"}>DL</MenuItem>
                                 <MenuItem value={"EDGE"}>EDGE</MenuItem>
-                                <MenuItem value={"MLB"}>MLB</MenuItem>
+                                <MenuItem value={"ILB"}>ILB</MenuItem>
                                 <MenuItem value={"OLB"}>OLB</MenuItem>
                                 <MenuItem value={"CB"}>CB</MenuItem>
                                 <MenuItem value={"S"}>S</MenuItem>
                                 <Divider/>
                                 <MenuItem value={"K/P"}>K/P</MenuItem>
-                
                             </Select>
                         </FormControl>
                     </Grid>
