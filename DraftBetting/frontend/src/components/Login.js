@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom'
 import { 
     Button, 
     Grid, 
@@ -7,6 +8,22 @@ import {
     Input,
     InputLabel,
  } from '@material-ui/core';
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 export default class LoginPage extends Component {
     constructor(props){
@@ -19,6 +36,7 @@ export default class LoginPage extends Component {
         this.handleEmailChanged = this.handleEmailChanged.bind(this);
         this.handlePassChanged = this.handlePassChanged.bind(this);
         this.handlePressLogin = this.handlePressLogin.bind(this);
+        this.handlePressLogout = this.handlePressLogout.bind(this);
     }
 
 
@@ -45,7 +63,27 @@ export default class LoginPage extends Component {
         };
 
         fetch('/account/login/', requestOptions)
-        .then((response) => response.json());
+        .then((response) => response.json())
+        .then(console.log(response));
+    }
+
+    handlePressLogout(){
+        const csrftoken = getCookie('csrftoken');
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFTOKEN' : csrftoken,
+        },
+            body: JSON.stringify({
+                email: this.state.email,
+                password: this.state.password,
+            })
+        };
+
+        console.log(requestOptions)
+        fetch('/account/logout/', requestOptions)
+        .then((response) => console.log(response.json()));
     }
 
     render(){
@@ -85,6 +123,14 @@ export default class LoginPage extends Component {
                             onClick={this.handlePressLogin}
                         >
                             Log-In
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} align="center">
+                        <Button
+                            variant="contained" color="primary"
+                            onClick={this.handlePressLogout}
+                        >
+                            Logout
                         </Button>
                     </Grid>
                 </Grid>
