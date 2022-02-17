@@ -1,6 +1,5 @@
-from http.client import ResponseNotReady
+
 import re
-from urllib import response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
@@ -47,6 +46,7 @@ class RegisterUser(APIView):
         print(serializer.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class LogInUser(APIView):
     serializer_class = LogInSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -72,6 +72,8 @@ class LogInUser(APIView):
 
 class LogOutUser(APIView):
     def post(self, request, format='json'):
+        print(dir(request))
+        print(request.data)
         logout(request)
         return Response('User Logged Out', status=status.HTTP_200_OK)
 
