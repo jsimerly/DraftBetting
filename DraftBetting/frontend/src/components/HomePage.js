@@ -12,15 +12,18 @@ export default class HomePage extends Component {
 
     render(){
         return (
-            <Router>
-                <Routes>
-                    <Route path='' element={<h1>This is the Home Page tt</h1>}/>                   
-                    <Route path='/register' element={ <RegisterPage /> }/>
-                    <Route path='/login' element={ <LoginPage /> }/>
-                    <Route path='/pick-a-player' element={ <PickPage /> }/>
-                    <Route path='/create-league' element={ <CreateLeaguePage />} />
-                </Routes>
-            </Router>
+            <div className="center">
+                <Router>
+                    <Routes>
+                        <Route exact path='/' element={<h1>This is the Home Page tt</h1>}/>                   
+                        <Route path='/register' element={ <RegisterPage /> }/>
+                        <Route path='/login' element={ <LoginPage /> }/>
+                        <Route path='/pick-a-player' element={ <PickPage /> }/>
+                        <Route path='/create-league' element={ <CreateLeaguePage />} />
+                    </Routes>
+                </Router>
+            </div>
+            
         );
     }
 }
