@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Redirect } from 'react-router-dom'
+import {
+    Link
+} from "react-router-dom"
 import { 
     Button, 
     Grid, 
@@ -31,6 +33,7 @@ export default class LoginPage extends Component {
         this.state = {
             email: null,
             password: null,
+            redirectToHome: false,
         }
 
         this.handleEmailChanged = this.handleEmailChanged.bind(this);
@@ -63,8 +66,7 @@ export default class LoginPage extends Component {
         };
 
         fetch('/account/login/', requestOptions)
-        .then((response) => response.json())
-        .then(console.log(response));
+        .then((response) => response.json());
     }
 
     handlePressLogout(){
@@ -126,12 +128,15 @@ export default class LoginPage extends Component {
                         </Button>
                     </Grid>
                     <Grid item xs={12} align="center">
-                        <Button
-                            variant="contained" color="primary"
-                            onClick={this.handlePressLogout}
-                        >
-                            Logout
-                        </Button>
+                        <Link to=''>
+                            <Button
+                                variant="contained" 
+                                color="primary"
+                                onClick={this.handlePressLogout}
+                            >
+                                Logout
+                            </Button>
+                        </Link>
                     </Grid>
                 </Grid>
             </div>
