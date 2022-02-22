@@ -136,11 +136,6 @@ export default class RegisterPage extends Component {
                         </Button>
                     </Grid>
                 </Grid>
-               
-                
-                
-
-                
             </div>
         )
     }

@@ -8,10 +8,6 @@ import {
         MenuItem,
         Divider, 
         Select,
-        Menu,
-        Stack,
-        Item,
-        List,
         ListItem,
         ListItemText
      } from '@material-ui/core';
