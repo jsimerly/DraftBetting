@@ -5,10 +5,6 @@ import {
     Typography, 
     FormControl, 
     TextField,
-    InputLabel,
-    MenuItem,
-    Divider, 
-    Select,
     Link,
  } from '@material-ui/core';
 
@@ -86,8 +82,8 @@ export default class CreateLeaguePage extends Component {
                         color="primary"
                         variant="contained"
                         align="center"
-                        onClick={this.handleCreateButtonPressed}
-                        href='/'
+                        // onClick={this.handleCreateButtonPressed}
+                        to='/'
                         component={Link}                        
                     >
                         Create League

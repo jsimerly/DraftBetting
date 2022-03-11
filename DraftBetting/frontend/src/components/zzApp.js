@@ -16,5 +16,5 @@ export default class App extends Component {
     }
 }
 
-const appDiv = document.getElementById("app")
+const appDiv = document.getElementById("root")
 render(<App />, appDiv)
