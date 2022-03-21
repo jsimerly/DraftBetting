@@ -27,7 +27,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-export default class LoginPage extends Component {
+export default class zzLoginPage extends Component {
     constructor(props){
         super(props);
         this.state = {

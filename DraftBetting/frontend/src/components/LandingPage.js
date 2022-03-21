@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
     Button,
+    Link
  } from '@material-ui/core';
 
 export default class LoginPage extends Component {
@@ -15,9 +16,9 @@ export default class LoginPage extends Component {
  
 
     handleLogInPressed(){       
-        let navigate = useNavigate();
-
         console.log('button pressed');
+
+        let navigate = useNavigate();
         navigate('/login');
     };
 
@@ -26,9 +27,11 @@ export default class LoginPage extends Component {
             <div>
                 <h1>Landing Page</h1>
                 <Button
+                    component={Link}
+                    href="/login"
                     variant="contained" 
                     color="primary"
-                    onClick={ this.handleLogInPressed}
+                    
                 >
 
                     Log In Page
