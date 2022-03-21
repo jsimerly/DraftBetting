@@ -15,6 +15,8 @@ import {
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
  export default function NavBar(props){
+    const [tabValue, setTabValue] = useState();
+
      return (
         <div>
             <AppBar>
@@ -23,16 +25,31 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
                         Welcome
                     </Typography>
                     
-                    <Tabs>
+                    <Tabs 
+                        textColor="inherit"
+                        value={tabValue}
+                        indicatorColor="secondary"
+                        onChange={(e, tabValue) => setTabValue(tabValue)}
+                    >
                         <Tab label='Draft'/>
                         <Tab label='Scoreboard'/>
                         <Tab label='Research'/>
                     </Tabs>
-                    <Button sx={{ marginLeft: "auto" }} variant="contained">LOGIN</Button>
-                    <Button variant="contained">SIGNUP</Button>
-                    <AccountCircleIcon
-                        // sx={{transform: scale(1.8)}}
-                    />
+                    <Button 
+                        sx={{ marginLeft: "auto" }} 
+                        variant="contained" 
+                        color="secondary"
+                    >
+                        LOGIN
+                    </Button>
+                    <Button 
+                        sx={{ marginLeft: '5px'}} 
+                        variant="contained" 
+                        color="secondary"
+                    >
+                        SIGNUP
+                    </Button>
+                    <AccountCircleIcon/>
                 </Toolbar>
             </AppBar>
         </div>
