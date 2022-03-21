@@ -10,7 +10,7 @@ import {
     FormControl,
     Input,
     InputLabel,
- } from '@material-ui/core';
+ } from '@mui/material';
 
 
 export default function LoginPage(props) {

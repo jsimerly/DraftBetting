@@ -6,7 +6,7 @@ import {
     FormControl, 
     TextField,
     Link,
- } from '@material-ui/core';
+ } from '@mui/material';
 
 function getCookie(name) {
     let cookieValue = null;

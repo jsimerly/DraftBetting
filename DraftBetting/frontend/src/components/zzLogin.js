@@ -9,7 +9,7 @@ import {
     FormControl,
     Input,
     InputLabel,
- } from '@material-ui/core';
+ } from '@mui/material';
 
 function getCookie(name) {
     let cookieValue = null;

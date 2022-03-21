@@ -6,7 +6,7 @@ import {
     FormControl,
     Input,
     InputLabel,
- } from '@material-ui/core';
+ } from '@mui/material';
 
 export default class RegisterPage extends Component {
     constructor(props){

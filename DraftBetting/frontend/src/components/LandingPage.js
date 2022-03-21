@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { 
     Button,
     Link
- } from '@material-ui/core';
+ } from '@mui/material';
 
 export default class LoginPage extends Component {
     constructor(props){
