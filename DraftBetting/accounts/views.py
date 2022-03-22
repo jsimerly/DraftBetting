@@ -18,7 +18,6 @@ class CurrentUser(APIView):
         if request.user.is_authenticated:
             json['email'] = request.user.email
             json['name'] = request.user.name
-            json['cookie'] = 
 
             return Response(json, status=status.HTTP_200_OK)
 

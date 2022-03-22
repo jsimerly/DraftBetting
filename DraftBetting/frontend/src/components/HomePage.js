@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { render } from "react-dom"
 import RegisterPage from "./RegisterPage";
 import PickPage from "./PickPlayer";
@@ -25,49 +25,40 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken')
 
-export default class HomePage extends Component {
-    constructor(props){
-        super(props);
+export default function HomePage(props) {
+    const [isLoggedIn, setIsLoggedIn] = useState()
+    const [user, setUser] = useState({
+        email: "simerly81@gmail.com",
+        name: "Stephen"
+    })
 
-        this.state = {
-            isLoggedIn: true,
-            user: {
-                    email: "simerly81@gmail.com",
-                    name: "Steve"
-                }, 
-        }
-
-        this.fetchCurrentUser = this.fetchCurrentUser.bind(this);
-    }
-
-    fetchCurrentUser(){
+    const fetchCurrentUser = () => {
         fetch('/account/current-user/')
         .then((response) => response.json())
     }
 
-    render(){
-        this.fetchCurrentUser()
-        return (
-            <div>
-                <NavBar 
-                    isLoggedIn={this.state.isLoggedIn} 
-                    user={this.state.user}
-                    crsftoken={csrftoken}
-                />
-                <div className="center">
-                    <BrowserRouter>
-                        <Routes>
-                            <Route exact path='/' element={<LandingPage/>}/>                   
-                            <Route path='/register' element={ <RegisterPage /> }/>
-                            <Route path='/login' element={ <LoginPage text="home"/> }/>
-                            <Route path='/pick-a-player' element={ <PickPage /> }/>
-                            <Route path='/create-league' element={ <CreateLeaguePage />} />
-                        </Routes>
-                    </BrowserRouter>
-                </div>
+    fetchCurrentUser()
+
+    return (
+        <div>
+            <NavBar 
+                isLoggedIn={isLoggedIn} 
+                user={user}
+                crsftoken={csrftoken}
+            />
+            <div className="center">
+                <BrowserRouter>
+                    <Routes>
+                        <Route exact path='/' element={<LandingPage/>}/>                   
+                        <Route path='/register' element={ <RegisterPage /> }/>
+                        <Route path='/login' element={ <LoginPage text="home"/> }/>
+                        <Route path='/pick-a-player' element={ <PickPage /> }/>
+                        <Route path='/create-league' element={ <CreateLeaguePage />} />
+                    </Routes>
+                </BrowserRouter>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 const rootDiv = document.getElementById("root")
