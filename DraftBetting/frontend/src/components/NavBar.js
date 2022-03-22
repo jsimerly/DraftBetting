@@ -22,7 +22,6 @@ import SportsFootballIcon from '@mui/icons-material/SportsFootball';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
-    const [loggedIn, setLoggedIn] = useState(props.isLoggedIn)
     const [user, setUser] = useState(props.user)
 
     const [anchorEl, setAnchorEl] = useState(null)
@@ -41,7 +40,7 @@ export default function NavBar(props){
             <AppBar>
                 <Toolbar>
                     <SportsFootballIcon/>
-                    {loggedIn ? 
+                    {props.user.isLoggedIn ? 
                         (<Box sx={{marginLeft:"auto"}}>
                             <Grid container>
                                 <Typography>{props.user.name}</Typography>

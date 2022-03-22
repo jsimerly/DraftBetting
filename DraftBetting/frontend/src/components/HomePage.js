@@ -26,23 +26,34 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken')
 
 export default function HomePage(props) {
-    const [isLoggedIn, setIsLoggedIn] = useState()
     const [user, setUser] = useState({
-        email: "simerly81@gmail.com",
-        name: "Stephen"
+        email: "",
+        name: "",
+        isLoggedIn: null,
     })
 
-    const fetchCurrentUser = () => {
-        fetch('/account/current-user/')
-        .then((response) => response.json())
-    }
-
-    fetchCurrentUser()
+    useEffect(() => {
+        const url = '/account/current-user/';
+        let expectedPayload = {
+            email: "simerly81@gmail.com",
+            name: "Jacob",
+            isLoggedIn: true,
+        };
+        setUser(expectedPayload);
+        // fetch(url)
+        //     .then((response) => setUser(response.json()))
+        //     // .then((response) => response.json())
+        //     // .then((json) => console.log(json['user']))
+        //     // .then((json) => setUser(json['user']))
+        //     .catch((error) => console.log(error));
+    }, []);
+    
 
     return (
         <div>
+            {console.log(user.name)}
+            {console.log(user.isLoggedIn)}
             <NavBar 
-                isLoggedIn={isLoggedIn} 
                 user={user}
                 crsftoken={csrftoken}
             />

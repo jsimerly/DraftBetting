@@ -18,11 +18,13 @@ class CurrentUser(APIView):
         if request.user.is_authenticated:
             json['email'] = request.user.email
             json['name'] = request.user.name
+            json['isLoggedIn'] = True
 
             return Response(json, status=status.HTTP_200_OK)
 
         json['email'] = ''
         json['name'] = 'Unregisted User'
+        json['isLoggedIn'] = False
         return Response(json, status=status.HTTP_200_OK)
 
 class RegisterUser(APIView):
