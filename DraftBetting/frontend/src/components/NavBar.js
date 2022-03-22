@@ -20,7 +20,7 @@ import {
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SportsFootballIcon from '@mui/icons-material/SportsFootball';
 
- export default function NavBar(props){
+export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
     const [loggedIn, setLoggedIn] = useState(props.isLoggedIn)
     const [user, setUser] = useState(props.user)
