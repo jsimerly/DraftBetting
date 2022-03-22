@@ -11,12 +11,22 @@ import { BrowserRouter, Routes, Route, } from 'react-router-dom';
 export default class HomePage extends Component {
     constructor(props){
         super(props);
+
+        this.state = {
+            isLoggedIn: true,
+            user: {
+                    email: "simerly81@gmail.com",
+                    name: "Steve"
+                }
+        }
     }
+
+    
 
     render(){
         return (
             <div>
-                <NavBar/>
+                <NavBar isLoggedIn={this.state.isLoggedIn} user={this.state.user}/>
                 <div className="center">
                     <BrowserRouter>
                         <Routes>

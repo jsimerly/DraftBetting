@@ -6,50 +6,105 @@ import {
 import { 
     AppBar,
     Toolbar,
-    Typography,
     Tabs,
     Tab,
     Button,
+    Box,
+    Menu,
+    MenuItem,
+    Divider,
+    Typography,
  } from '@mui/material';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SportsFootballIcon from '@mui/icons-material/SportsFootball';
 
  export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
+    const [loggedIn, setLoggedIn] = useState(props.isLoggedIn)
+    const [user, setUser] = useState(props.user)
+
+    const [anchorEl, setAnchorEl] = useState(null)
+    const open = Boolean(anchorEl)
+
+    const handleProfileClickedOpen = (e) =>{
+        setAnchorEl(e.currentTarget);
+    };
+
+    const handleProfileClickedClosed = () => {
+        setAnchorEl(null);
+    };
 
      return (
         <div>
             <AppBar>
                 <Toolbar>
-                    <Typography>
-                        Welcome
-                    </Typography>
-                    
+                    <SportsFootballIcon/>
+                    {loggedIn ? 
+                        (
+                            <Box sx={{marginLeft:"auto"}}>
+                                {props.user.name}
+                                <AccountCircleIcon
+                                    onClick={handleProfileClickedOpen}
+                                />
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleProfileClickedClosed}
+                                    anchorOrigin={{
+                                        vertical: "bottom",
+                                        horizontal: "left",
+                                    }}
+                                    transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "left"
+                                    }}
+                                >
+                                    <MenuItem onClick={handleProfileClickedClosed}>Profile</MenuItem>
+                                    <MenuItem onClick={handleProfileClickedClosed}>My Account</MenuItem>
+                                    <MenuItem onClick={handleProfileClickedClosed}>Settings</MenuItem>
+                                    <Divider sx={{my: 0.5}}/>
+                                    <MenuItem onClick={handleProfileClickedClosed}>Logout</MenuItem>
+
+                                </Menu>
+                            </Box>                        
+                        )
+                        : 
+                        (<Box
+                            sx={{marginLeft:"auto"}}
+                            >
+                                <Button 
+                                    variant="contained" 
+                                    color="secondary"
+                                    href="/login"
+                                >
+                                    LOGIN
+                                </Button>
+                                <Button 
+                                    sx={{ marginLeft: '5px'}} 
+                                    variant="contained" 
+                                    color="secondary"
+                                    href="/register"
+                                >
+                                    SIGNUP
+                                </Button>
+                            </Box>
+                        )}
+                </Toolbar>
+                <Toolbar
+                    sx={{backgroundColor: 'green'}}
+                >
                     <Tabs 
                         textColor="inherit"
                         value={tabValue}
                         indicatorColor="secondary"
-                        onChange={(e, tabValue) => setTabValue(tabValue)}
+                        onChange={(e, tabValue) => setTabValue(tabValue)}        
+                        sx={{margin: "auto"}}               
                     >
-                        <Tab label='Draft'/>
+                        <Tab label='Draft' sx={{padding:"5px"}}/>
                         <Tab label='Scoreboard'/>
                         <Tab label='Research'/>
                     </Tabs>
-                    <Button 
-                        sx={{ marginLeft: "auto" }} 
-                        variant="contained" 
-                        color="secondary"
-                    >
-                        LOGIN
-                    </Button>
-                    <Button 
-                        sx={{ marginLeft: '5px'}} 
-                        variant="contained" 
-                        color="secondary"
-                    >
-                        SIGNUP
-                    </Button>
-                    <AccountCircleIcon/>
                 </Toolbar>
             </AppBar>
         </div>
