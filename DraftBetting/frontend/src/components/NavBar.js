@@ -14,6 +14,7 @@ import {
     MenuItem,
     Divider,
     Typography,
+    Grid,
  } from '@mui/material';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -41,11 +42,13 @@ import SportsFootballIcon from '@mui/icons-material/SportsFootball';
                 <Toolbar>
                     <SportsFootballIcon/>
                     {loggedIn ? 
-                        (
-                            <Box sx={{marginLeft:"auto"}}>
-                                {props.user.name}
+                        (<Box sx={{marginLeft:"auto"}}>
+                            <Grid container>
+                                <Typography>{props.user.name}</Typography>
                                 <AccountCircleIcon
                                     onClick={handleProfileClickedOpen}
+                                    sx={{marginLeft: "5px"}}
+                                    item
                                 />
                                 <Menu
                                     anchorEl={anchorEl}
@@ -67,7 +70,8 @@ import SportsFootballIcon from '@mui/icons-material/SportsFootball';
                                     <MenuItem onClick={handleProfileClickedClosed}>Logout</MenuItem>
 
                                 </Menu>
-                            </Box>                        
+                            </Grid>
+                         </Box>                        
                         )
                         : 
                         (<Box
