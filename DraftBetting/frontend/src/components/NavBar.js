@@ -60,60 +60,97 @@ export default function NavBar(props){
         <div>
             <AppBar>
                 <Toolbar>
-                    <SportsFootballIcon/>
-                    {props.user.isLoggedIn ? 
-                        (<Box sx={{marginLeft:"auto"}}>
-                            <Grid container>
-                                <Typography>{props.user.name}</Typography>
-                                <AccountCircleIcon
-                                    onClick={handleProfileClickedOpen}
-                                    sx={{marginLeft: "5px"}}
-                                    item
-                                />
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleProfileClickedClosed}
-                                    anchorOrigin={{
-                                        vertical: "bottom",
-                                        horizontal: "left",
+                    <Grid
+                        container
+                    >
+                        <Grid
+                            item
+                            xs={3}
+                            md={3}
+                        >
+                            <SportsFootballIcon
+                                xs
+                                sx={{
+                                    marginRight:'auto',
                                     }}
-                                    transformOrigin={{
-                                        vertical: "top",
-                                        horizontal: "left"
-                                    }}
-                                >
-                                    <MenuItem onClick={handleProfileClickedClosed}>Profile</MenuItem>
-                                    <MenuItem onClick={handleProfileClickedClosed}>My Account</MenuItem>
-                                    <MenuItem onClick={handleProfileClickedClosed}>Settings</MenuItem>
-                                    <Divider sx={{my: 0.5}}/>
-                                    <MenuItem onClick={handleLogOutClicked}>Logout</MenuItem>
-
-                                </Menu>
-                            </Grid>
-                         </Box>                        
-                        )
-                        : 
-                        (<Box
-                            sx={{marginLeft:"auto"}}
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={6}
+                            md={6}
+                            justifyContent="center"
+                            style={{display: 'flex'}}
+                        >
+                            test
+                        </Grid>
+                        <Grid
+                            item
+                            xs={3}
+                            md={3}
+                            justifyContent="flex-end"
+                            style={{display: 'flex'}}
+                        >
+                            <Box
+                               
                             >
-                                <Button 
-                                    variant="contained" 
-                                    color="secondary"
-                                    href="/login"
-                                >
-                                    LOGIN
-                                </Button>
-                                <Button 
-                                    sx={{ marginLeft: '5px'}} 
-                                    variant="contained" 
-                                    color="secondary"
-                                    href="/register"
-                                >
-                                    SIGNUP
-                                </Button>
+                                {props.user.isLoggedIn ? 
+                                (<Box sx={{marginLeft:"auto"}}>
+                                    <Grid container>
+                                        <Typography>{props.user.name}</Typography>
+                                        <AccountCircleIcon
+                                            onClick={handleProfileClickedOpen}
+                                            sx={{marginLeft: "15px"}}
+                                            item
+                                        />
+                                        <Menu
+                                            anchorEl={anchorEl}
+                                            open={open}
+                                            onClose={handleProfileClickedClosed}
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "left",
+                                            }}
+                                            transformOrigin={{
+                                                vertical: "top",
+                                                horizontal: "left"
+                                            }}
+                                        >
+                                            <MenuItem onClick={handleProfileClickedClosed}>Profile</MenuItem>
+                                            <MenuItem onClick={handleProfileClickedClosed}>My Account</MenuItem>
+                                            <MenuItem onClick={handleProfileClickedClosed}>Settings</MenuItem>
+                                            <Divider sx={{my: 0.5}}/>
+                                            <MenuItem onClick={handleLogOutClicked}>Logout</MenuItem>
+
+                                        </Menu>
+                                    </Grid>
+                                </Box>                        
+                                )
+                                : 
+                                (<Box
+                                    sx={{marginLeft:"auto"}}
+                                    >
+                                        <Button 
+                                            variant="contained" 
+                                            color="secondary"
+                                            href="/login"
+                                        >
+                                            LOGIN
+                                        </Button>
+                                        <Button 
+                                            sx={{ marginLeft: '5px'}} 
+                                            variant="contained" 
+                                            color="secondary"
+                                            href="/register"
+                                        >
+                                            SIGNUP
+                                        </Button>
+                                    </Box>
+                                )}
                             </Box>
-                        )}
+                        </Grid>
+                    </Grid>
+                    
                 </Toolbar>
                 <Toolbar
                     sx={{backgroundColor: 'green'}}
@@ -125,7 +162,12 @@ export default function NavBar(props){
                         onChange={(e, tabValue) => setTabValue(tabValue)}        
                         sx={{margin: "auto"}}               
                     >
-                        <Tab label='Draft' sx={{padding:"5px"}}/>
+                        <Tab 
+                            label='Draft' 
+                            sx={{padding:"20px"}} 
+                            component={Link}
+                            to='/pick-a-player'
+                        />
                         <Tab label='Scoreboard'/>
                         <Tab label='Research'/>
                     </Tabs>

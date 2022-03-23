@@ -51,13 +51,12 @@ export default function HomePage(props) {
 
     return (
         <div>
-            <NavBar 
-                user={user} 
-                csrftoken={csrftoken}
-            />
-            <div className="center">
-                <h1>{user.email}</h1>
-                <BrowserRouter>
+            <BrowserRouter>
+                <NavBar 
+                    user={user} 
+                    csrftoken={csrftoken}
+                />
+                <div className="center">
                     <Routes>
                         <Route exact path='/' element={<LandingPage/>}/>                   
                         <Route path='/register' element={ <RegisterPage /> }/>
@@ -65,8 +64,8 @@ export default function HomePage(props) {
                         <Route path='/pick-a-player' element={ <PickPage /> }/>
                         <Route path='/create-league' element={ <CreateLeaguePage />} />
                     </Routes>
-                </BrowserRouter>
-            </div>
+                </div>
+            </BrowserRouter>
         </div>
     );
 }
