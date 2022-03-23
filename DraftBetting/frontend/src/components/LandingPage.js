@@ -26,16 +26,6 @@ export default class LoginPage extends Component {
         return ( 
             <div>
                 <h1>Landing Page</h1>
-                <Button
-                    component={Link}
-                    href="/login"
-                    variant="contained" 
-                    color="primary"
-                    
-                >
-
-                    Log In Page
-                </Button>
             </div>
         );
     }

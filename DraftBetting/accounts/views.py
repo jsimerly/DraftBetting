@@ -64,7 +64,11 @@ class LogInUser(APIView):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    json = {'email':user.email}
+                    json = {
+                            'email':user.email,
+                            'name' : user.name,
+                            'isLoggedIn': True
+                            }
                     return Response(json, status=status.HTTP_202_ACCEPTED)
            
         

@@ -32,37 +32,37 @@ export default function HomePage(props) {
         isLoggedIn: null,
     })
 
+    function childSetUserHandler(userFromChild) {
+        console.log('this came from the childSetUserHandler')
+        console.log(userFromChild)
+        setUser(userFromChild);
+    }
+
     useEffect(() => {
         const url = '/account/current-user/';
-        let expectedPayload = {
-            email: "simerly81@gmail.com",
-            name: "Jacob",
-            isLoggedIn: true,
-        };
-        setUser(expectedPayload);
-        // fetch(url)
-        //     .then((response) => setUser(response.json()))
-        //     // .then((response) => response.json())
-        //     // .then((json) => console.log(json['user']))
-        //     // .then((json) => setUser(json['user']))
-        //     .catch((error) => console.log(error));
-    }, []);
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                // setUser(data);
+                // console.log(data)
+            })
+            .catch((error) => console.log(error));
+    });
     
 
     return (
         <div>
-            {console.log(user.name)}
-            {console.log(user.isLoggedIn)}
             <NavBar 
                 user={user}
-                crsftoken={csrftoken}
+                csrftoken={csrftoken}
             />
             <div className="center">
+                <h1>{user.email}</h1>
                 <BrowserRouter>
                     <Routes>
                         <Route exact path='/' element={<LandingPage/>}/>                   
                         <Route path='/register' element={ <RegisterPage /> }/>
-                        <Route path='/login' element={ <LoginPage text="home"/> }/>
+                        <Route path='/login' element={ <LoginPage user={user} handler={childSetUserHandler}/> }/>
                         <Route path='/pick-a-player' element={ <PickPage /> }/>
                         <Route path='/create-league' element={ <CreateLeaguePage />} />
                     </Routes>

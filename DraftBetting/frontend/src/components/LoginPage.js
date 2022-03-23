@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from  "react";
 import {
-    Link,
     useNavigate,
 } from "react-router-dom";
 import { 
@@ -48,9 +47,13 @@ export default function LoginPage(props) {
         fetch('/account/login/', requestOptions)
         .then(function (response){
             if(response.status === 202){
-                console.log('success');
-                navigate('/')
+                response.json()
+                .then((data) => {
+                    props.handler(data)
+                })
+                navigate('/');
             } else {
+                // give them the error
                 console.log(response.json())
             }
         });
