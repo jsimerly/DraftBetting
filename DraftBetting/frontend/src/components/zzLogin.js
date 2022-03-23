@@ -76,7 +76,7 @@ export default class zzLoginPage extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFTOKEN' : csrftoken,
-        },
+            },
             body: JSON.stringify({
                 email: this.state.email,
                 password: this.state.password,

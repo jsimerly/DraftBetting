@@ -22,10 +22,15 @@ import SportsFootballIcon from '@mui/icons-material/SportsFootball';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
-    const [user, setUser] = useState(props.user)
+    const [user, setUser] = useState(props.user);
+    const csrftoken = props.csrftoken;
 
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
+
+    useEffect( () => {
+        setUser(props.user)
+    }, [])
 
     const handleProfileClickedOpen = (e) =>{
         setAnchorEl(e.currentTarget);
@@ -33,6 +38,22 @@ export default function NavBar(props){
 
     const handleProfileClickedClosed = () => {
         setAnchorEl(null);
+    };
+
+    const handleLogOutClicked = () => {
+        console.log(csrftoken);
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'X-CSRFTOKEN' : csrftoken,
+            },
+        };
+
+        fetch('/account/logout/', requestOptions)
+        .then((response) => console.log(response.json()));
+        handleProfileClickedClosed();
+        window.location.reload();
     };
 
      return (
@@ -66,7 +87,7 @@ export default function NavBar(props){
                                     <MenuItem onClick={handleProfileClickedClosed}>My Account</MenuItem>
                                     <MenuItem onClick={handleProfileClickedClosed}>Settings</MenuItem>
                                     <Divider sx={{my: 0.5}}/>
-                                    <MenuItem onClick={handleProfileClickedClosed}>Logout</MenuItem>
+                                    <MenuItem onClick={handleLogOutClicked}>Logout</MenuItem>
 
                                 </Menu>
                             </Grid>
