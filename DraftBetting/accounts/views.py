@@ -77,6 +77,7 @@ class LogInUser(APIView):
 
 class LogOutUser(APIView):
     def post(self, request, format='json'):
+        print(request)
         logout(request)
         return Response('User Logged Out', status=status.HTTP_200_OK)
 

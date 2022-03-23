@@ -23,7 +23,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-const csrftoken = getCookie('csrftoken')
 
 export default function HomePage(props) {
     const [user, setUser] = useState({
@@ -31,11 +30,11 @@ export default function HomePage(props) {
         name: "",
         isLoggedIn: null,
     })
+    const [csrftoken, setCsrftoken] = useState(getCookie('csrftoken'))
 
     function childSetUserHandler(userFromChild) {
-        console.log('this came from the childSetUserHandler')
-        console.log(userFromChild)
         setUser(userFromChild);
+        setCsrftoken(getCookie('csrftoken'))
     }
 
     useEffect(() => {
@@ -43,17 +42,17 @@ export default function HomePage(props) {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                // setUser(data);
-                // console.log(data)
+                setUser(data);
+                setCsrftoken(getCookie('csrftoken'))
             })
             .catch((error) => console.log(error));
-    });
+    },[]);
     
 
     return (
         <div>
             <NavBar 
-                user={user}
+                user={user} 
                 csrftoken={csrftoken}
             />
             <div className="center">
