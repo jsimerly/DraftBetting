@@ -25,16 +25,15 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
-    const [user, setUser] = useState(props.user);
     const [leagues, setLeagues] = useState(['league 1', 'league 2']);
     const csrftoken = props.csrftoken;
 
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
-    // useEffect( () => {
-    
-    // }, [])
+    useEffect( () => {
+        getLeagues()
+    }, [props.user]);
 
     const handleProfileClickedOpen = (e) =>{
         setAnchorEl(e.currentTarget);
@@ -48,7 +47,7 @@ export default function NavBar(props){
         fetch('/draft/get-user-leagues')
             .then((response) => response.json())
             .then((data) => {
-                setLeagues(data);
+                setLeagues(data)
             })
     }
 
@@ -97,9 +96,10 @@ export default function NavBar(props){
                             <FormControl                            >
                                 <Select
                                     value={4}
+                                    // onClick={}
                                 >
                                     {leagues.map((league, index) => {
-                                        return <MenuItem> {league}</MenuItem>
+                                        return <MenuItem> {league.name}</MenuItem>
                                     })}
                                     <MenuItem value={4}>Create New League <AddCircleIcon sx={{marginLeft:'10px'}}/></MenuItem>
                                 </Select>
