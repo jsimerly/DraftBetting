@@ -16,7 +16,7 @@ import {
     Typography,
     Grid,
     Select,
-    FormControl
+    FormControl,
  } from '@mui/material';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -26,16 +26,15 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
     const [user, setUser] = useState(props.user);
-    const [leagues, setLeagues] = useState();
+    const [leagues, setLeagues] = useState(['league 1', 'league 2']);
     const csrftoken = props.csrftoken;
 
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
-    useEffect( () => {
-        setUser(props.user);
-        getLeagues()
-    }, [])
+    // useEffect( () => {
+    
+    // }, [])
 
     const handleProfileClickedOpen = (e) =>{
         setAnchorEl(e.currentTarget);
@@ -49,7 +48,7 @@ export default function NavBar(props){
         fetch('/draft/get-user-leagues')
             .then((response) => response.json())
             .then((data) => {
-                setLeagues(data)
+                setLeagues(data);
             })
     }
 
@@ -95,13 +94,13 @@ export default function NavBar(props){
                             justifyContent="center"
                             style={{display: 'flex'}}
                         >
-                            <FormControl>
+                            <FormControl                            >
                                 <Select
                                     value={4}
                                 >
-                                    <MenuItem value={1}>League1</MenuItem>
-                                    <MenuItem value={2}>League2</MenuItem>
-                                    <MenuItem value={3}>League3</MenuItem>
+                                    {leagues.map((league, index) => {
+                                        return <MenuItem> {league}</MenuItem>
+                                    })}
                                     <MenuItem value={4}>Create New League <AddCircleIcon sx={{marginLeft:'10px'}}/></MenuItem>
                                 </Select>
                             </FormControl>
