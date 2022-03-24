@@ -15,21 +15,26 @@ import {
     Divider,
     Typography,
     Grid,
+    Select,
+    FormControl
  } from '@mui/material';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SportsFootballIcon from '@mui/icons-material/SportsFootball';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
     const [user, setUser] = useState(props.user);
+    const [leagues, setLeagues] = useState();
     const csrftoken = props.csrftoken;
 
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
     useEffect( () => {
-        setUser(props.user)
+        setUser(props.user);
+        getLeagues()
     }, [])
 
     const handleProfileClickedOpen = (e) =>{
@@ -39,6 +44,14 @@ export default function NavBar(props){
     const handleProfileClickedClosed = () => {
         setAnchorEl(null);
     };
+
+    const getLeagues = () => {
+        fetch('/draft/get-user-leagues')
+            .then((response) => response.json())
+            .then((data) => {
+                setLeagues(data)
+            })
+    }
 
     const handleLogOutClicked = () => {
         console.log(csrftoken);
@@ -66,7 +79,7 @@ export default function NavBar(props){
                         <Grid
                             item
                             xs={3}
-                            md={3}
+                            md={3}                            
                         >
                             <SportsFootballIcon
                                 xs
@@ -82,7 +95,17 @@ export default function NavBar(props){
                             justifyContent="center"
                             style={{display: 'flex'}}
                         >
-                            test
+                            <FormControl>
+                                <Select
+                                    value={4}
+                                >
+                                    <MenuItem value={1}>League1</MenuItem>
+                                    <MenuItem value={2}>League2</MenuItem>
+                                    <MenuItem value={3}>League3</MenuItem>
+                                    <MenuItem value={4}>Create New League <AddCircleIcon sx={{marginLeft:'10px'}}/></MenuItem>
+                                </Select>
+                            </FormControl>
+                            
                         </Grid>
                         <Grid
                             item

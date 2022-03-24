@@ -30,6 +30,7 @@ class LeagueSerializer(serializers.ModelSerializer):
         model = League
         fields = ('name', 'owner')
 
+
 class CompetitorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Competitor

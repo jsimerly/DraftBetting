@@ -7,6 +7,8 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from accounts import serializers
+
 #My Imports
 from .models import *
 from draft.serializers import (
@@ -147,6 +149,18 @@ class CompPickView(APIView):
         else:
             print("---------------")
             print(serializer.errors)
+
+class LeaguesUsersInView(APIView):
+    def get(self, request, format='json'):
+        user = request.user
+        json = {}
+
+        if user.is_authenticated:
+
+            userObj = User.objects.get(id=user.id)
+            leagues = userObj.league_set.all()
+
+            return Response(LeagueSerializer(leagues, many=True).data, status=status.HTTP_200_OK)
             
     
 
