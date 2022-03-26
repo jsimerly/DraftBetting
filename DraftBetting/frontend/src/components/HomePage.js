@@ -30,11 +30,16 @@ export default function HomePage(props) {
         name: "",
         isLoggedIn: null,
     })
-    const [csrftoken, setCsrftoken] = useState(getCookie('csrftoken'))
+    const [csrftoken, setCsrftoken] = useState(getCookie('csrftoken'));
+    const [currentLeague, setCurrentLeague] = useState(JSON.parse(localStorage.getItem('currentLeague')));
 
     function childSetUserHandler(userFromChild) {
         setUser(userFromChild);
         setCsrftoken(getCookie('csrftoken'))
+    }
+
+    function childSetCurrentLeagueHandler(leagueFromChild){
+        setCurrentLeague(leagueFromChild);
     }
 
     useEffect(() => {
@@ -46,7 +51,9 @@ export default function HomePage(props) {
                 setCsrftoken(getCookie('csrftoken'))
             })
             .catch((error) => console.log(error));
-    },[]);
+
+            localStorage.setItem('currentLeague', JSON.stringify(currentLeague));
+    },[currentLeague]);
     
 
     return (
@@ -55,6 +62,8 @@ export default function HomePage(props) {
                 <NavBar 
                     user={user} 
                     csrftoken={csrftoken}
+                    currentLeague={currentLeague}
+                    leagueHandler={childSetCurrentLeagueHandler}
                 />
                 <div className="center">
                     <Routes>

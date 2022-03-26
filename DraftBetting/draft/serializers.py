@@ -25,10 +25,15 @@ class CompPickSerializer(serializers.ModelSerializer):
         model = CompPick
         fields = ('comp', 'player', 'pos',)
         
-class LeagueSerializer(serializers.ModelSerializer):
+class LeagueCreatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = League
         fields = ('name', 'owner')
+
+class LeagueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = League
+        fields = ('name', 'owner', 'year', 'id')
 
 
 class CompetitorSerializer(serializers.ModelSerializer):

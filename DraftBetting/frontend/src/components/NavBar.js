@@ -25,15 +25,17 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
-    const [leagues, setLeagues] = useState(['league 1', 'league 2']);
+    const [leagues, setLeagues] = useState([]);
+    const [cLeague, setCLeague] = useState(props.currentLeague)
     const csrftoken = props.csrftoken;
+    
 
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
     useEffect( () => {
         getLeagues()
-    }, [props.user]);
+    }, []);
 
     const handleProfileClickedOpen = (e) =>{
         setAnchorEl(e.currentTarget);
@@ -52,7 +54,6 @@ export default function NavBar(props){
     }
 
     const handleLogOutClicked = () => {
-        console.log(csrftoken);
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -66,6 +67,44 @@ export default function NavBar(props){
         handleProfileClickedClosed();
         window.location.reload();
     };
+
+    function handleLeagueChange(e) {
+        props.leagueHandler(e.target.value)
+        setCLeague(e.target.value)
+    }
+
+    function leagueDropdown(leagues) {;
+        if (leagues.length === 0) {
+            return (<Button
+                    component={Link}
+                    to='/create-league'
+                    >
+                        Create New League <AddCircleIcon sx={{marginLeft:'10px'}}/>
+                    </Button>
+            )
+        } else {
+            console.log(props.currentLeague);
+            return (
+                
+                <Select
+                    defaultValue={props.currentLeague}
+                    value={props.currentLeague}
+                    onChange={handleLeagueChange}
+                >
+                    {leagues.map((league, index) => {
+                        return <MenuItem 
+                                    value={league}
+                                > 
+                                    {league.name}
+                                </MenuItem>
+                    })}
+                    <MenuItem>
+                        {props.currentLeague.name}
+                    </MenuItem>
+                </Select>
+            )
+        }
+    }
 
      return (
         <div>
@@ -94,15 +133,7 @@ export default function NavBar(props){
                             style={{display: 'flex'}}
                         >
                             <FormControl                            >
-                                <Select
-                                    value={4}
-                                    // onClick={}
-                                >
-                                    {leagues.map((league, index) => {
-                                        return <MenuItem> {league.name}</MenuItem>
-                                    })}
-                                    <MenuItem value={4}>Create New League <AddCircleIcon sx={{marginLeft:'10px'}}/></MenuItem>
-                                </Select>
+                                {leagueDropdown(leagues)}
                             </FormControl>
                             
                         </Grid>

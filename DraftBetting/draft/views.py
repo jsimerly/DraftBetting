@@ -11,10 +11,7 @@ from accounts import serializers
 
 #My Imports
 from .models import *
-from draft.serializers import (
-    PlayerSerializer, CompPickSerializer, LeagueSerializer, CompetitorSerializer,
-    PlayerDraftedSerializer, DraftSerializer
-)
+from draft.serializers import *
 # Create your views here.
 
 class AddCompetitorToLeague(APIView):
@@ -98,7 +95,7 @@ class PlayerDraftedView(APIView):
         return Response({'Bad Request' : 'Invalid Data', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class CreateLeagueView(APIView):
-    serializer_class = LeagueSerializer
+    serializer_class = LeagueCreatorSerializer
 
     def post(self, request, format='json'):
         serializer = self.serializer_class(data=request.data)
@@ -113,7 +110,7 @@ class CreateLeagueView(APIView):
             comp = Competitor(user=request.user, league=league)
             comp.save()
 
-            return Response(LeagueSerializer(league).data, status=status.HTTP_201_CREATED)
+            return Response(LeagueCreatorSerializer(league).data, status=status.HTTP_201_CREATED)
 
         else:
             print('-------------------------------')
