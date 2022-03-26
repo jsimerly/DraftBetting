@@ -26,7 +26,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
     const [leagues, setLeagues] = useState([]);
-    const [cLeague, setCLeague] = useState(props.currentLeague)
     const csrftoken = props.csrftoken;
     
 
@@ -36,6 +35,8 @@ export default function NavBar(props){
     useEffect( () => {
         getLeagues()
     }, []);
+
+   
 
     const handleProfileClickedOpen = (e) =>{
         setAnchorEl(e.currentTarget);
@@ -70,10 +71,9 @@ export default function NavBar(props){
 
     function handleLeagueChange(e) {
         props.leagueHandler(e.target.value)
-        setCLeague(e.target.value)
     }
 
-    function leagueDropdown(leagues) {;
+    function leagueDropdown(leagues, cLeague) {;
         if (leagues.length === 0) {
             return (<Button
                     component={Link}
@@ -83,12 +83,10 @@ export default function NavBar(props){
                     </Button>
             )
         } else {
-            console.log(props.currentLeague);
+            console.log("current League: " + props.currentLeague.name);
             return (
-                
                 <Select
                     defaultValue={props.currentLeague}
-                    value={props.currentLeague}
                     onChange={handleLeagueChange}
                 >
                     {leagues.map((league, index) => {
@@ -98,14 +96,10 @@ export default function NavBar(props){
                                     {league.name}
                                 </MenuItem>
                     })}
-                    <MenuItem>
-                        {props.currentLeague.name}
-                    </MenuItem>
                 </Select>
             )
         }
     }
-
      return (
         <div>
             <AppBar>
