@@ -32,7 +32,17 @@ export default function HomePage(props) {
     })
     const [csrftoken, setCsrftoken] = useState(getCookie('csrftoken'));
     const [currentLeague, setCurrentLeague] = useState(JSON.parse(localStorage.getItem('currentLeague')));
+    const [leagues, setLeagues] = useState([]);
 
+    const getLeagues = () => {
+        fetch('/draft/get-user-leagues')
+            .then((response) => response.json())
+            .then((data) => {
+                setLeagues(data)
+            })
+        
+    }
+ 
     function childSetUserHandler(userFromChild) {
         setUser(userFromChild);
         setCsrftoken(getCookie('csrftoken'))
@@ -41,6 +51,11 @@ export default function HomePage(props) {
     function childSetCurrentLeagueHandler(leagueFromChild){
         setCurrentLeague(leagueFromChild);
     }
+
+    useEffect( () => {
+        getLeagues()
+        console.log(leagues)
+    }, [])
 
     useEffect(() => {
         const url = '/account/current-user/';
@@ -63,6 +78,7 @@ export default function HomePage(props) {
                     user={user} 
                     csrftoken={csrftoken}
                     currentLeague={currentLeague}
+                    leagues={leagues}
                     leagueHandler={childSetCurrentLeagueHandler}
                 />
                 <div className="center">

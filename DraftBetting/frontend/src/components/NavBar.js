@@ -25,14 +25,13 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
-    const [leagues, setLeagues] = useState([]);
     const csrftoken = props.csrftoken;
 
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
     useEffect( () => {
-        getLeagues()
+    
     }, []);
 
    
@@ -43,14 +42,6 @@ export default function NavBar(props){
     const handleProfileClickedClosed = () => {
         setAnchorEl(null);
     };
-
-    const getLeagues = () => {
-        fetch('/draft/get-user-leagues')
-            .then((response) => response.json())
-            .then((data) => {
-                setLeagues(data)
-            })
-    }
 
     const handleLogOutClicked = () => {
         const requestOptions = {
@@ -71,12 +62,7 @@ export default function NavBar(props){
         props.leagueHandler(e.target.value)
     }
 
-    function getLeagueIndex(leagues, league) {
-        const i = leagues.indexOf(league)
-        console.log(i)
-    }
-
-    function leagueDropdown(leagues, cLeague) {;
+    function leagueDropdown(leagues) {;
         if (leagues.length === 0) {
             return (<Button
                     component={Link}
@@ -87,11 +73,10 @@ export default function NavBar(props){
             )
         } else {
             console.log("current League: " + props.currentLeague.name);
-            getLeagueIndex(leagues, props.currentLeague)
-            const leagueIndex = 7
+            console.log(props.leagues)
             return (
                 <Select
-                    defaultValue={leagues[leagueIndex]}
+                    defaultValue={props.currentLeague}
                     onChange={handleLeagueChange}
                 >
                     {leagues.map((league, index) => {
@@ -123,6 +108,7 @@ export default function NavBar(props){
                                     marginRight:'auto',
                                     }}
                             />
+                            {/* <h1>{props.currentLeague}</h1> */}
                         </Grid>
                         <Grid
                             item
@@ -132,7 +118,7 @@ export default function NavBar(props){
                             style={{display: 'flex'}}
                         >
                             <FormControl                            >
-                                {leagueDropdown(leagues)}
+                                {leagueDropdown(props.leagues)}
                             </FormControl>
                             
                         </Grid>
