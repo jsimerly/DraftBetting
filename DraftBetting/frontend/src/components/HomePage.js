@@ -67,7 +67,7 @@ export default function HomePage(props) {
                 />
                 <div className="center">
                     <Routes>
-                        <Route exact path='/' element={<LandingPage/>}/>                   
+                        <Route exact path='/' element={<LandingPage currentLeague={currentLeague}/>}/>                   
                         <Route path='/register' element={ <RegisterPage /> }/>
                         <Route path='/login' element={ <LoginPage user={user} handler={childSetUserHandler}/> }/>
                         <Route path='/pick-a-player' element={ <PickPage /> }/>

@@ -27,7 +27,6 @@ export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
     const [leagues, setLeagues] = useState([]);
     const csrftoken = props.csrftoken;
-    
 
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
@@ -37,7 +36,6 @@ export default function NavBar(props){
     }, []);
 
    
-
     const handleProfileClickedOpen = (e) =>{
         setAnchorEl(e.currentTarget);
     };
@@ -73,6 +71,11 @@ export default function NavBar(props){
         props.leagueHandler(e.target.value)
     }
 
+    function getLeagueIndex(leagues, league) {
+        const i = leagues.indexOf(league)
+        console.log(i)
+    }
+
     function leagueDropdown(leagues, cLeague) {;
         if (leagues.length === 0) {
             return (<Button
@@ -84,9 +87,11 @@ export default function NavBar(props){
             )
         } else {
             console.log("current League: " + props.currentLeague.name);
+            getLeagueIndex(leagues, props.currentLeague)
+            const leagueIndex = 7
             return (
                 <Select
-                    defaultValue={props.currentLeague}
+                    defaultValue={leagues[leagueIndex]}
                     onChange={handleLeagueChange}
                 >
                     {leagues.map((league, index) => {
