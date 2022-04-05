@@ -144,6 +144,7 @@ class CompPickView(APIView):
 
             return Response(CompPickSerializer(compPick).data, status=status.HTTP_201_CREATED)
         else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
             print("---------------")
             print(serializer.errors)
 
@@ -159,8 +160,6 @@ class LeaguesUsersInView(APIView):
 
             return Response(LeagueSerializer(leagues, many=True).data, status=status.HTTP_200_OK)
             
-    
-
         
 def index(request):
     return HttpResponse('Hello world')
