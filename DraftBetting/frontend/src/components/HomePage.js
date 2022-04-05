@@ -31,31 +31,11 @@ export default function HomePage(props) {
         isLoggedIn: null,
     })
     const [csrftoken, setCsrftoken] = useState(getCookie('csrftoken'));
-    const [currentLeague, setCurrentLeague] = useState(JSON.parse(localStorage.getItem('currentLeague')));
-    const [leagues, setLeagues] = useState([]);
-
-    const getLeagues = () => {
-        fetch('/draft/get-user-leagues')
-            .then((response) => response.json())
-            .then((data) => {
-                setLeagues(data)
-            })
-        
-    }
  
     function childSetUserHandler(userFromChild) {
         setUser(userFromChild);
         setCsrftoken(getCookie('csrftoken'))
     }
-
-    function childSetCurrentLeagueHandler(leagueFromChild){
-        setCurrentLeague(leagueFromChild);
-    }
-
-    useEffect( () => {
-        getLeagues()
-        console.log(leagues)
-    }, [])
 
     useEffect(() => {
         const url = '/account/current-user/';
@@ -66,9 +46,7 @@ export default function HomePage(props) {
                 setCsrftoken(getCookie('csrftoken'))
             })
             .catch((error) => console.log(error));
-
-            localStorage.setItem('currentLeague', JSON.stringify(currentLeague));
-    },[currentLeague]);
+    }, []);
     
 
     return (
@@ -77,13 +55,10 @@ export default function HomePage(props) {
                 <NavBar 
                     user={user} 
                     csrftoken={csrftoken}
-                    currentLeague={currentLeague}
-                    leagues={leagues}
-                    leagueHandler={childSetCurrentLeagueHandler}
                 />
                 <div className="center">
                     <Routes>
-                        <Route exact path='/' element={<LandingPage currentLeague={currentLeague}/>}/>                   
+                        <Route exact path='/' element={<LandingPage/>}/>                   
                         <Route path='/register' element={ <RegisterPage /> }/>
                         <Route path='/login' element={ <LoginPage user={user} handler={childSetUserHandler}/> }/>
                         <Route path='/pick-a-player' element={ <PickPage /> }/>

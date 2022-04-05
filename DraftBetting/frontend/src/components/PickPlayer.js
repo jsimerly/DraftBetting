@@ -1,154 +1,194 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from  "react";
+import {
+    Link,
+    useNavigate,
+} from "react-router-dom";
+
 import { 
-        Button, 
-        Grid, 
-        Typography, 
-        FormControl, 
-        InputLabel,
-        MenuItem,
-        Divider, 
-        Select,
-        ListItem,
-        ListItemText
-     } from '@mui/material';
-import LockIcon from '@mui/icons-material/Lock';
-import { Link } from "react-router-dom";
+    FormControl,
+    Select,
+    MenuItem,
+    ListItemText,
+    InputLabel,
+    Divider,
+    Button,
+    Box,
+ } from '@mui/material';
+ import LockIcon from '@mui/icons-material/Lock';
 
+ export default function PickPage(props) {
+    const [playerSelected, setPlayerSelected] = useState();
+    const [positionSelected, setPositionSelected] = useState();
+    const [pickIsLocked, setPickIsLocked] = useState(false);
+    const [players, setPlayers] = useState([]);
 
-export default class PickPage extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            playerSelected: null,
-            positionSelected: null,
-            pickIsLocked: 'false',
-            players:[],
-            playerFilter : null,
-        };
+    useEffect(() => {
+        getPlayers()
+    }, [])
 
-        this.getPlayers();
-        this.handleLockInPressed = this.handleLockInPressed.bind(this);
-        this.handlePlayerSelected = this.handlePlayerSelected.bind(this);
-        this.handlePosSelected = this.handlePosSelected.bind(this);
+    function handlePlayerSelected(e) {
+        setPlayerSelected(e.target.value)
     }
 
-    handlePlayerSelected(e) {
-        this.setState({
-            playerSelected: e.target.value,
-        });
+    function handlePositionSelected(e) {
+        setPositionSelected(e.target.value);
     }
 
-    handlePosSelected(e) {
-        this.setState({
-            positionSelected: e.target.value,
-        });
-    }
+    const handleLockInPressed = () => {
+        setPickIsLocked(true);
 
-    handleLockInPressed() {
-        this.setState({
-            pickIsLocked: true,
-        });
-        
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                round: 1,
+                round:1,
                 pick: 1,
                 comp: 'Jacob',
-                player: this.state.playerSelected,
-                pos: this.state.positionSelected
+                player: playerSelected,
+                pos: positionSelected
             })
         };
 
-        fetch('/draft/pick-player/', requestOptions)
-        .then((response) => response.json());
+        fetch('draft/pick-player/', requestOptions)
+            .then((response) => console.log(response.json()))
     }
 
-    getPlayers() {
-        fetch('/draft/get-players')
-        .then((response) => response.json())
-        .then((data) => {
-            this.setState({
-                players: data,
-            });
-        });
+    const getPlayers = () => {
+        fetch('/draft/get-players/')
+            .then((response) => response.json())
+            .then((data) => {
+                setPlayers(data)
+            })
     }
 
     
+
+    const roles = {
+        OFFENSE: 1,
+        DEFENSE: 2,
+        SPECIAL: 3,
+        OTHER: 4,
+    }
+
+    const selectablePositions = {
+        //off
+        QB: {fullName:"Quarterback", abbrev:"QB", role: roles.OFFENSE},
+        RB: {fullName:"Running Back", abbrev:"RB", role: roles.OFFENSE},
+        WR: {fullName:"Wide Reciever", abbrev:"WR", role: roles.OFFENSE},
+        TE: {fullName:"Tight End", abbrev:"TE", role: roles.OFFENSE},
+        OT: {fullName:"Offensive Tackle", abbrev:"OT", role: roles.OFFENSE},
+        OG: {fullName:"Offensive Gaurd", abbrev:"OG", role: roles.OFFENSE},
+        C: {fullName:"Center", abbrev:"C", role: roles.OFFENSE},
+        //def
+        DL: {fullName:"Defensive Lineman", abbrev:"DL", role: roles.DEFENSE},
+        EDGE: {fullName:"Edge Rusher", abbrev:"EDGE", role: roles.DEFENSE},
+        ILB: {fullName:"Inside Linebacker", abbrev:"ILB", role: roles.DEFENSE},
+        OLB: {fullName:"Outside Linebacker", abbrev:"OLB", role: roles.DEFENSE},
+        CB: {fullName:"Cornerback", abbrev:"CB", role: roles.DEFENSE},
+        S: {fullName:"Saftey", abbrev:"S", role: roles.DEFENSE},
+        //special
+        K: {fullName:"Kicker or Punter", abbrev:"K/P", role: roles.SPECIAL},
+
+    }
+
+    function mapPositions(positionDict) {
+        let roleHolder = roles.OFFENSE;
+
+        return(
+            Object.keys(positionDict).map((key, index) => {
+                let currentPositon = positionDict[key]
+
+                if (currentPositon.role === roleHolder) {
+                    return( 
+                        <MenuItem value={currentPositon.abbrev}>
+                            <ListItemText primary={currentPositon.abbrev}/>
+                        </MenuItem>
+                        
+                    )
+                } else { 
+                    roleHolder = currentPositon.role
+                    return (
+                        <div>
+                            <Divider/>
+                            <MenuItem>
+                                <ListItemText value={currentPositon.abbrev}> {currentPositon.abbrev} </ListItemText>
+                            </MenuItem>
+                            
+                        </div>
+                    )
+                }
+                
+            })   
+        )
+
+             
+    }
+
+    function playersDropdown(){
+        return(
+            <FormControl fullWidth="true">
+                <InputLabel id='select-helper-player-label'> Player </InputLabel>
+                <Select
+                    labelId="select-helper-player-label"
+                >
+                    {players.map((player, index) => {
+                        const player_name = player.first_name + " " + player.last_name
+                        const player_info = player.pos + " - " + player.college
+                        return (
+                                <MenuItem key={player.id} value={player.id}>
+                                    <ListItemText primary={player_name} secondary={player_info}/>
+                                </MenuItem>
+                        )
+                    })}
+                </Select>
+            </FormControl>
+        )
+    }
+
+    function positionDropdown(){
+        
+        return(
+            <FormControl fullWidth='true'>
+                <InputLabel id='select-helper-pos-label'> POS </InputLabel>
+                <Select
+                    labelId="select-helper-pos-label"
+                    id="pos-selection"
+                    label="position"
+                    align="center"
+                    onChange={handlePositionSelected}
+                >
+                    {mapPositions(selectablePositions)}
+                </Select>
+            </FormControl>
+        )
+    }
     
-    render(){
-        let playersMenuItem = this.state.players.map((player)=>{
-            const player_name = player.first_name + " " + player.last_name
-            const player_info = player.pos + " - " + player.college
-            return (
-                <ListItem value={player.id}>
-                        <ListItemText primary={player_name}  secondary={player_info}/>
-                </ListItem>
-            );
-        })
-        return (
-            <div>
-                <Grid container spacing={1}>
-                    <Grid item xs={12} align="center">
-                        <Typography component='h4' variant='h4'>
-                            Select Player
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={8} align="center">
-                        <FormControl fullWidth="true">
-                            <InputLabel id='select-helper-player-label'>Player</InputLabel>
-                            <Select
-                                labelId="select-helper-player-label"
-                                id="player-selection"
-                                label="player"
-                                onChange={this.handlePlayerSelected}
-                            >   
-                                {playersMenuItem}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={8} align="center">
-                        <FormControl fullWidth="true">
-                            <InputLabel id='select-helper-pos-label'>Position</InputLabel>
-                            <Select
-                                    labelId="select-helper-pos-label"
-                                    id="pos-selection"
-                                    label="position"
-                                    align="center"
-                                    onChange={this.handlePosSelected}
-                                > 
-                                <MenuItem value={"QB"}>QB</MenuItem>
-                                <MenuItem value={"RB"}>RB</MenuItem>
-                                <MenuItem value={"WR"}>WR</MenuItem>
-                                <MenuItem value={"TE"}>TE</MenuItem>
-                                <MenuItem value={"OT"}>OT</MenuItem>
-                                <MenuItem value={"OG"}>OG</MenuItem>
-                                <MenuItem value={"C"}>C</MenuItem>
-                                <Divider/>
-                                <MenuItem value={"DL"}>DL</MenuItem>
-                                <MenuItem value={"EDGE"}>EDGE</MenuItem>
-                                <MenuItem value={"ILB"}>ILB</MenuItem>
-                                <MenuItem value={"OLB"}>OLB</MenuItem>
-                                <MenuItem value={"CB"}>CB</MenuItem>
-                                <MenuItem value={"S"}>S</MenuItem>
-                                <Divider/>
-                                <MenuItem value={"K/P"}>K/P</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} align="center">
-                        <Button 
-                            color="secondary" 
-                            variant="container" 
-                            align="center"
-                            onClick={this.handleLockInPressed}>  
+    function main() {
+        if (pickIsLocked) {
+            return(
+                <div>
+                    Pick is Locked
+                </div>
+            )
+        } else {
+            return(
+                <Box
+                    textAlign={'center'}
+                >
+                    {playersDropdown()}
+                    {positionDropdown()}
+                    <Button
+                        onClick={handleLockInPressed}
+                    >
                         <LockIcon/>
-                        </Button>  
-                    </Grid>               
-                </Grid>
-            </div>
-            
-        );
+                    </Button>
+                </Box>
+            )
+        }
     }
-}
+
+
+    return (
+         main()
+     )
+ }
