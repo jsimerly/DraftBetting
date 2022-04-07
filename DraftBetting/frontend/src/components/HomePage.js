@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 import CreateLeaguePage from "./CreateLeage";
 import LoginPage from "./LoginPage";
 import LandingPage from "./LandingPage";
+import ManageLeagues from "./ManageLeagues";
 import { BrowserRouter, Routes, Route, } from 'react-router-dom';
 
 function getCookie(name) {
@@ -31,11 +32,13 @@ export default function HomePage(props) {
         isLoggedIn: null,
     })
     const [csrftoken, setCsrftoken] = useState(getCookie('csrftoken'));
+    const [leagues, setLeagues] = useState(null)
  
     function childSetUserHandler(userFromChild) {
         setUser(userFromChild);
         setCsrftoken(getCookie('csrftoken'))
     }
+
 
     useEffect(() => {
         const url = '/account/current-user/';
@@ -46,8 +49,18 @@ export default function HomePage(props) {
                 setCsrftoken(getCookie('csrftoken'))
             })
             .catch((error) => console.log(error));
+
+        getLeagues()
     }, []);
-    
+
+    const getLeagues = () => {
+        fetch('/draft/get-user-leagues')
+            .then((response) => response.json())
+            .then((data) => {
+                setLeagues(data)
+            })
+    }
+
 
     return (
         <div>
@@ -55,6 +68,7 @@ export default function HomePage(props) {
                 <NavBar 
                     user={user} 
                     csrftoken={csrftoken}
+                    leagues={leagues}
                 />
                 <div className="center">
                     <Routes>
@@ -63,6 +77,7 @@ export default function HomePage(props) {
                         <Route path='/login' element={ <LoginPage user={user} handler={childSetUserHandler}/> }/>
                         <Route path='/pick-a-player' element={ <PickPage /> }/>
                         <Route path='/create-league' element={ <CreateLeaguePage />} />
+                        <Route path='/manage-leagues' element={ <ManageLeagues leagues={leagues}/>} />
                     </Routes>
                 </div>
             </BrowserRouter>

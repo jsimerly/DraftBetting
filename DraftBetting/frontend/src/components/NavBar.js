@@ -25,7 +25,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
-    const [leagues, setLeagues] = useState(null);
     const [currentLeague, setCurrentLeague] = useState(
         JSON.parse(localStorage.getItem('currentLeague')) || ''
     );
@@ -36,20 +35,13 @@ export default function NavBar(props){
     const open = Boolean(anchorEl)
 
     useEffect(() => {
-        getLeagues();
     }, []);
 
     useEffect(() => {
         localStorage.setItem('currentLeague', JSON.stringify(currentLeague));
     }, [currentLeague]);
 
-    const getLeagues = () => {
-        fetch('/draft/get-user-leagues')
-            .then((response) => response.json())
-            .then((data) => {
-                setLeagues(data)
-            })
-    }
+    
 
     const handleProfileClickedOpen = (e) =>{
         setAnchorEl(e.currentTarget);
@@ -73,6 +65,11 @@ export default function NavBar(props){
         handleProfileClickedClosed();
         window.location.reload();
     };
+
+    const handleMyLeaguesClicked = () => {
+
+        handleProfileClickedClosed();
+    }
 
     function handleLeagueChange(e) {
         setCurrentLeague(e.target.value);
@@ -129,7 +126,7 @@ export default function NavBar(props){
                             style={{display: 'flex'}}
                         >
                             <FormControl                            >
-                                {leagueDropdown(leagues)}
+                                {leagueDropdown(props.leagues)}
                             </FormControl>
                             
                         </Grid>
@@ -166,7 +163,10 @@ export default function NavBar(props){
                                             }}
                                         >
                                             <MenuItem onClick={handleProfileClickedClosed}>Profile</MenuItem>
-                                            <MenuItem onClick={handleProfileClickedClosed}>My Account</MenuItem>
+                                            <MenuItem 
+                                                component={Link}
+                                                to="/manage-leagues" 
+                                                onClick={handleProfileClickedClosed}>My Leagues</MenuItem>
                                             <MenuItem onClick={handleProfileClickedClosed}>Settings</MenuItem>
                                             <Divider sx={{my: 0.5}}/>
                                             <MenuItem onClick={handleLogOutClicked}>Logout</MenuItem>

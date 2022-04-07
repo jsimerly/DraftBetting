@@ -151,7 +151,6 @@ class CompPickView(APIView):
 class LeaguesUsersInView(APIView):
     def get(self, request, format='json'):
         user = request.user
-        json = {}
 
         if user.is_authenticated:
 
@@ -160,6 +159,5 @@ class LeaguesUsersInView(APIView):
 
             return Response(LeagueSerializer(leagues, many=True).data, status=status.HTTP_200_OK)
             
-        
 def index(request):
     return HttpResponse('Hello world')

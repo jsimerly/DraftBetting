@@ -6,5 +6,6 @@ urlpatterns = [
     path('register/', index),
     path('pick-a-player/', index),
     path('create-league/', index),
-    path('login/', index)
+    path('login/', index),
+    path('manage-leagues/', index)
 ]
