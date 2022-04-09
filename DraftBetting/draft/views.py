@@ -145,8 +145,7 @@ class CompPickView(APIView):
             return Response(CompPickSerializer(compPick).data, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-            print("---------------")
-            print(serializer.errors)
+            
 
 class LeaguesUsersInView(APIView):
     def get(self, request, format='json'):
@@ -157,7 +156,15 @@ class LeaguesUsersInView(APIView):
             userObj = User.objects.get(id=user.id)
             leagues = userObj.league_set.all()
 
-            return Response(LeagueSerializer(leagues, many=True).data, status=status.HTTP_200_OK)
+            json = LeagueSerializer(leagues, many=True).data
+
+            for league in json:
+                is_owner = league['owner'] == user.id
+                league['is_owner'] = is_owner
+            
+            return Response(json, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
             
 def index(request):
     return HttpResponse('Hello world')

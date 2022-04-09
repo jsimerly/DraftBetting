@@ -32,11 +32,18 @@ export default function HomePage(props) {
         isLoggedIn: null,
     })
     const [csrftoken, setCsrftoken] = useState(getCookie('csrftoken'));
-    const [leagues, setLeagues] = useState(null)
+    const [leagues, setLeagues] = useState(null);
+    const [currentLeague, setCurrentLeague] = useState(
+        JSON.parse(localStorage.getItem('currentLeague')) || ''
+    );
  
     function childSetUserHandler(userFromChild) {
         setUser(userFromChild);
         setCsrftoken(getCookie('csrftoken'))
+    }
+
+    function currentLeagueHandler(league) {
+        setCurrentLeague(league)
     }
 
 
@@ -69,6 +76,8 @@ export default function HomePage(props) {
                     user={user} 
                     csrftoken={csrftoken}
                     leagues={leagues}
+                    currentLeague={currentLeague}
+                    currentLeagueHandler={currentLeagueHandler}
                 />
                 <div className="center">
                     <Routes>

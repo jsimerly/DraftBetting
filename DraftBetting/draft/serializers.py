@@ -33,7 +33,8 @@ class LeagueCreatorSerializer(serializers.ModelSerializer):
 class LeagueSerializer(serializers.ModelSerializer):
     class Meta:
         model = League
-        fields = ('name', 'owner', 'year', 'id')
+        fields = ('name', 'owner', 'year', 'id',)
+
 
 
 class CompetitorSerializer(serializers.ModelSerializer):

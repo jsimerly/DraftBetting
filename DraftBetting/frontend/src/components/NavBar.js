@@ -25,9 +25,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function NavBar(props){
     const [tabValue, setTabValue] = useState();
-    const [currentLeague, setCurrentLeague] = useState(
-        JSON.parse(localStorage.getItem('currentLeague')) || ''
-    );
+    const currentLeague = props.currentLeague
     
     const csrftoken = props.csrftoken;
 
@@ -67,13 +65,11 @@ export default function NavBar(props){
     };
 
     const handleMyLeaguesClicked = () => {
-
         handleProfileClickedClosed();
     }
 
     function handleLeagueChange(e) {
-        setCurrentLeague(e.target.value);
-        // console.log(e.target.value)
+        props.currentLeagueHandler(e.target.value);
     }      
 
     function leagueDropdown(leagues) {
