@@ -70,7 +70,7 @@ class League(models.Model):
 
 class Competitor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    league = models.ForeignKey(League, on_delete=models.PROTECT, null=True)
+    league = models.ForeignKey(League, on_delete=models.CASCADE, null=True)
 
     pointsFromPos = models.IntegerField(default=0)
     pointsFromPick = models.IntegerField(default=0)
@@ -94,10 +94,10 @@ class Competitor(models.Model):
         return self.pointsFromPos + self.pointsFromPick
 
 class CompPick(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE, null=True)
-    pos = models.CharField(max_length=4, null=True)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, default=Player.objects.all().first)
+    pos = models.CharField(max_length=4, blank=True)
 
-    comp = models.ForeignKey(Competitor, on_delete=models.CASCADE)
+    comp = models.ForeignKey(Competitor, on_delete=models.CASCADE,)
 
     overall = models.IntegerField()    
     round = models.IntegerField()

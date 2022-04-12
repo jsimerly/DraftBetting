@@ -1,5 +1,6 @@
 #External
 from datetime import datetime
+from tkinter import EW
 from rest_framework.fields import CurrentUserDefault
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -121,29 +122,37 @@ class CompPickView(APIView):
 
     def post(self, request, format='json'):
         serializer = self.serializer_class(data=request.data)
+        leagueId = request.data['league']
   
         if serializer.is_valid():
+            user = request.user
+
+            if user.is_authenticated:
      
-            playerId = serializer.data.get('player')
-            player = Player.objects.get(id=playerId)
-            
-            compId = serializer.data.get('comp')
-            comp = Competitor.objects.get(id=compId)
+                playerId = serializer.data.get('player')
+                player = Player.objects.get(id=playerId)
+                pos = serializer.data.get('pos')
 
-            pos = serializer.data.get('pos')
+                comp = Competitor.objects.filter(user=user, league_id=leagueId).first()
 
-            draft = Draft()
+                draft = Draft()
 
-            overall = draft.get_next_overall()
-            pick = draft.get_next_pick()
-            round = draft.get_next_round()
+                overall = draft.get_next_overall()
 
-            compPick = CompPick(player=player, pos=pos, round=round,pick=pick, comp=comp, overall=overall)
-            compPick.save()
+                #need to make these come from server side
+                pick = draft.get_next_pick()
+                round = draft.get_next_round()
+                
+                compPick = CompPick(player=player, pos=pos, round=round,pick=pick, comp=comp, overall=overall)
+                compPick.save()
 
 
-            return Response(CompPickSerializer(compPick).data, status=status.HTTP_201_CREATED)
+                return Response(CompPickSerializer(compPick).data, status=status.HTTP_201_CREATED)
+            else:
+                print('user auth error')
+                return(Response(status=status.HTTP_403_FORBIDDEN))
         else:
+            print(serializer.errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)
             
 

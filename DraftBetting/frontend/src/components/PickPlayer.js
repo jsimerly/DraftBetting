@@ -22,6 +22,11 @@ import {
     const [pickIsLocked, setPickIsLocked] = useState(false);
     const [players, setPlayers] = useState([]);
 
+    const csrftoken = props.csrftoken
+
+    const [round, setRound] = useState(1);
+    const [pick, setPick] = useState(1);
+
     useEffect(() => {
         getPlayers()
     }, [])
@@ -39,17 +44,21 @@ import {
 
         const requestOptions = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFTOKEN' : csrftoken,
+            },
             body: JSON.stringify({
                 round:1,
                 pick: 1,
-                comp: 'Jacob',
                 player: playerSelected,
-                pos: positionSelected
+                pos: positionSelected,
+                league: props.currentLeague,
+                user: props.user.uuid             
             })
         };
 
-        fetch('draft/pick-player/', requestOptions)
+        fetch('/draft/pick-player/', requestOptions)
             .then((response) => console.log(response.json()))
     }
 
@@ -61,7 +70,9 @@ import {
             })
     }
 
-    
+    const getCurrentPick = () => {
+
+    }
 
     const roles = {
         OFFENSE: 1,
@@ -130,6 +141,7 @@ import {
                 <InputLabel id='select-helper-player-label'> Player </InputLabel>
                 <Select
                     labelId="select-helper-player-label"
+                    onChange={handlePlayerSelected}
                 >
                     {players.map((player, index) => {
                         const player_name = player.first_name + " " + player.last_name

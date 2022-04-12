@@ -19,12 +19,14 @@ class CurrentUser(APIView):
             json['email'] = request.user.email
             json['name'] = request.user.name
             json['isLoggedIn'] = True
+            json['uuid'] = request.user.id            
 
             return Response(json, status=status.HTTP_200_OK)
 
         json['email'] = ''
         json['name'] = 'Unregisted User'
         json['isLoggedIn'] = False
+        json['UUID'] = None
         return Response(json, status=status.HTTP_200_OK)
 
 class RegisterUser(APIView):

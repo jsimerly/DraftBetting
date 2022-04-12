@@ -82,7 +82,7 @@ export default class CreateLeaguePage extends Component {
                         color="primary"
                         variant="contained"
                         align="center"
-                        // onClick={this.handleCreateButtonPressed}
+                        onClick={this.handleCreateButtonPressed}
                         to='/'
                         component={Link}                        
                     >

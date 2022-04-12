@@ -46,7 +46,6 @@ export default function HomePage(props) {
         setCurrentLeague(league)
     }
 
-
     useEffect(() => {
         const url = '/account/current-user/';
         fetch(url)
@@ -68,7 +67,6 @@ export default function HomePage(props) {
             })
     }
 
-
     return (
         <div>
             <BrowserRouter>
@@ -84,7 +82,13 @@ export default function HomePage(props) {
                         <Route exact path='/' element={<LandingPage/>}/>                   
                         <Route path='/register' element={ <RegisterPage /> }/>
                         <Route path='/login' element={ <LoginPage user={user} handler={childSetUserHandler}/> }/>
-                        <Route path='/pick-a-player' element={ <PickPage /> }/>
+                        <Route 
+                            path='/pick-a-player' 
+                            element={ <PickPage 
+                                        currentLeague={currentLeague} 
+                                        csrftoken={csrftoken}
+                                        user={user}
+                                    /> }/>
                         <Route path='/create-league' element={ <CreateLeaguePage />} />
                         <Route path='/manage-leagues' element={ <ManageLeagues leagues={leagues}/>} />
                     </Routes>
