@@ -54,7 +54,7 @@ export default function NavBar(props){
             method: 'POST',
             headers: {
                 'Content-Type':'application/json',
-                'X-CSRFTOKEN' : csrftoken,
+                
             },
         };
 
@@ -68,7 +68,7 @@ export default function NavBar(props){
         handleProfileClickedClosed();
     }
 
-    function handleLeagueChange(e) {
+    function handleLeagueChange(e1) {
         props.currentLeagueHandler(e.target.value);
     }      
 
